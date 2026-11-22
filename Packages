@@ -1,0 +1,28 @@
+Package: ayusos-archive-keyring
+Architecture: all
+Version: 1.0
+Maintainer: AyusOS Linux <julioayusoalende-hue@users.noreply.github.com>
+Depends: ca-certificates, ayusos-release (>= 1.1)
+Filename: ./ayusos-archive-keyring_1.0_all.deb
+Size: 1344
+MD5sum: 2a4002a018ebc00ccc3b7ccb0867b975
+SHA1: df1841d546e1edfb7296587e907b138d161198f9
+SHA256: 15579085c4cc7112f3fb1f83211a25de7b72632cec13ca4630ce0750713d0de7
+SHA512: 1001d28a96eb9df2116385ec2aeb3cba47a558d249a9ed6645e9fbbec10506311f52be78dd199dc7e2b0891f4134b301065128b0eb4784a15a8a8951325072b0
+Description: Canal oficial de actualizaciones de AyusOS Linux
+ Instala el llavero público y activa el repositorio APT de AyusOS Linux.
+
+Package: ayusos-release
+Architecture: all
+Version: 1.1
+Maintainer: AyusOS Linux <julioayusoalende-hue@users.noreply.github.com>
+Depends: base-files (>= 13), base-files (<< 14), acl, aio-debian-gui, btrfs-progs, celluloid, dconf-cli, deluge, kitty, libreoffice-gtk3, pkexec, python3-apt, timeshift
+Filename: ./ayusos-release_1.1_all.deb
+Size: 3980
+MD5sum: 8d8ec3ff41c50483caba02a468a31f4a
+SHA1: 2438e33847719388ad8fe4f49594244ab45a3625
+SHA256: d6cb9fe1e9f30aa23f74a5d753d023b1ef234e285774b333b2721c9923066f5b
+SHA512: 154fc50a263beb9a27b987afb7e3fb7888efc674b83ea9a170bb1d8c8f1eb2faa5c3f6ceb8ab922b38be8ae9c5aab3353a4e5d6ccd4b2ebb10d9f720153def66
+Description: Identidad, aplicaciones y actualización de AyusOS Linux
+ Conjunto de aplicaciones y ajustes de AyusOS para Debian 13.
+
