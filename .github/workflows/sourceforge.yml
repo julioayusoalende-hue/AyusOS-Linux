@@ -1,0 +1,144 @@
+name: Publicar ISO completa en SourceForge
+
+on:
+  release:
+    types: [published, edited]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Etiqueta publicada en GitHub (por ejemplo, v1.1)
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sourceforge-${{ github.event.release.tag_name || inputs.tag }}
+  cancel-in-progress: false
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      RELEASE_TAG: ${{ github.event.release.tag_name || inputs.tag }}
+      SF_BASE: https://downloads.sourceforge.net/project/ayusos-linux
+    steps:
+      - name: Descargar y comprobar la ISO
+        shell: bash
+        run: |
+          set -euo pipefail
+          dir="$RUNNER_TEMP/ayusos"
+          mkdir -p "$dir/upload"
+          cd "$dir"
+          gh release view --json assets,body,isDraft -- "$RELEASE_TAG" > release.json
+          jq -e '.isDraft == false' release.json >/dev/null
+          jq -r '.assets[].name' release.json | sort > assets
+          mapfile -t sums < <(grep -E '^AyusOS-Linux-[A-Za-z0-9._+-]+\.iso\.sha256$' assets || :)
+          if (("${#sums[@]}" == 0)); then
+            printf 'La versión no contiene una ISO con su SHA-256.\n' >&2
+            exit 1
+          fi
+          for sum in "${sums[@]}"; do
+            iso="${sum%.sha256}"
+            gh release download --pattern "$sum" -- "$RELEASE_TAG"
+            read -r hash filename < "$sum"
+            [[ "$hash" =~ ^[0-9a-f]{64}$ && "$filename" == "$iso" ]]
+            if grep -Fxq -- "$iso" assets; then
+              gh release download --pattern "$iso" -- "$RELEASE_TAG"
+            else
+              mapfile -t parts < <(awk -v prefix="$iso.part-" 'index($0, prefix) == 1 && substr($0, length(prefix)+1) ~ /^[0-9][0-9]$/ { print }' assets)
+              (("${#parts[@]}" > 0))
+              for i in "${!parts[@]}"; do
+                printf -v expected '%s.part-%02d' "$iso" "$((i+1))"
+                [[ "${parts[i]}" == "$expected" ]]
+              done
+              gh release download --pattern "$iso.part-[0-9][0-9]" -- "$RELEASE_TAG"
+              cat -- "${parts[@]}" > "$iso"
+              rm -- "${parts[@]}"
+            fi
+            printf '%s  %s\n' "$hash" "$iso" | sha256sum --check --strict
+            public="${iso%.iso}-${hash:0:16}.iso"
+            mv -- "$iso" "upload/$public"
+            printf '%s  %s\n' "$hash" "$public" > "upload/$public.sha256"
+            printf '%s\t%s\n' "$iso" "$public" >> links
+          done
+
+      - name: Subir a SourceForge por SSH
+        shell: bash
+        env:
+          SF_SSH_KEY: ${{ secrets.SOURCEFORGE_SSH_KEY }}
+          SF_USER: ${{ vars.SOURCEFORGE_USER }}
+        run: |
+          set -euo pipefail
+          if [[ -z "$SF_SSH_KEY" || ! "$SF_USER" =~ ^[A-Za-z0-9_-]+$ ]]; then
+            echo 'Configura el secreto SOURCEFORGE_SSH_KEY y la variable SOURCEFORGE_USER.' >&2
+            exit 1
+          fi
+          umask 077
+          ssh_dir=$(mktemp -d)
+          trap 'rm -r -- "$ssh_dir"' EXIT
+          printf '%s\n' "$SF_SSH_KEY" > "$ssh_dir/key"
+          printf '%s\n' 'frs.sourceforge.net ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOQD35Ujalhh+JJkPvMckDlhu4dS7WH6NsOJ15iGCJLC' > "$ssh_dir/known_hosts"
+          cd "$RUNNER_TEMP/ayusos/upload"
+          for attempt in 1 2 3; do
+            if rsync -t --partial-dir=.rsync-partial --chmod=F644 \
+              -e "ssh -i $ssh_dir/key -o IdentitiesOnly=yes -o BatchMode=yes -o StrictHostKeyChecking=yes -o UserKnownHostsFile=$ssh_dir/known_hosts" \
+              -- *.iso *.iso.sha256 "$SF_USER@frs.sourceforge.net:/home/frs/project/ayusos-linux/"; then
+              exit 0
+            fi
+            sleep "$((attempt*10))"
+          done
+          exit 1
+
+      - name: Verificar el espejo y enlazar la descarga completa
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd "$RUNNER_TEMP/ayusos"
+          while IFS=$'\t' read -r label public; do
+            size=$(stat -c %s "upload/$public")
+            ready=false
+            for attempt in {1..25}; do
+              if curl -fsSL --max-time 15 --max-filesize 512 "$SF_BASE/$public.sha256" -o mirror.sha256 \
+                && cmp -s mirror.sha256 "upload/$public.sha256" \
+                && curl -fsSL --max-time 15 --max-filesize 64 --range 0-63 -D headers "$SF_BASE/$public" -o mirror.part \
+                && tr -d '\r' < headers | grep -Fxiq "content-range: bytes 0-63/$size" \
+                && cmp -s mirror.part <(head -c 64 "upload/$public"); then
+                ready=true
+                break
+              fi
+              sleep 15
+            done
+            if ! "$ready"; then
+              printf 'SourceForge todavía no sirve correctamente %s.\n' "$public" >&2
+              exit 1
+            fi
+          done < links
+          gh release view --json body -- "$RELEASE_TAG" > release.json
+          python3 - <<'PY'
+          import json
+          import os
+          import re
+          from pathlib import Path
+          from urllib.parse import quote
+
+          body = json.loads(Path("release.json").read_text())["body"] or ""
+          start = "<!-- ayusos-sourceforge:inicio -->"
+          end = "<!-- ayusos-sourceforge:fin -->"
+          lines = [start, "## Descargar la ISO completa desde SourceForge", ""]
+          for row in Path("links").read_text().splitlines():
+              label, filename = row.split("\t")
+              url = os.environ["SF_BASE"] + "/" + quote(filename)
+              lines.append(f"- [{label}]({url}) · [SHA-256]({url}.sha256)")
+          lines.append(end)
+          preserved = re.sub(re.escape(start) + r".*?" + re.escape(end), "", body, flags=re.S).strip()
+          Path("release-notes.md").write_text("\n".join(lines) + "\n\n" + preserved + "\n")
+          print("\n".join(lines[1:-1]))
+          PY
+          if [[ "$(jq -r '.body // ""' release.json)" != "$(cat release-notes.md)" ]]; then
+            gh release edit --notes-file release-notes.md -- "$RELEASE_TAG"
+          fi
