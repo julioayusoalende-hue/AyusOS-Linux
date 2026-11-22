@@ -1,0 +1,10 @@
+gnome-core
+gdm3
+network-manager
+firefox-esr
+firefox-esr-l10n-es-es
+locales
+task-spanish
+live-boot
+live-config
+live-config-systemd
