@@ -13,6 +13,13 @@ lb config --distribution trixie --architectures amd64 --binary-images iso-hybrid
   --archive-areas 'main non-free-firmware' --debian-installer live \
   --iso-application 'AyusOS Linux' --iso-volume AYUSOS_01 \
   --bootappend-live 'boot=live components locales=es_ES.UTF-8 keyboard-layouts=es timezone=Europe/Madrid hostname=ayusos'
+# live-build instala los DEB locales y resuelve sus dependencias en el chroot.
+aio_deb=aio-debian-gui_1.1.6_all.deb
+mkdir -p config/packages.chroot
+curl --fail --location --retry 3 --output "config/packages.chroot/$aio_deb" \
+  "https://github.com/julioayusoalende-hue/AIO-Debian-GUI/releases/download/v1.1.6/$aio_deb"
+printf '%s  %s\n' '2e032b518dd9beebe5b6055468f0b3b163cc02cf778931687f55e144cab425b5' \
+  "config/packages.chroot/$aio_deb" | sha256sum --check
 lb build
 install -m 0644 live-image-amd64.hybrid.iso "$destino/AyusOS-Linux-0.1-amd64.iso"
 cd "$destino"
