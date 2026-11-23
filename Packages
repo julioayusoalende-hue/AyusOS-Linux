@@ -12,6 +12,20 @@ SHA512: 1001d28a96eb9df2116385ec2aeb3cba47a558d249a9ed6645e9fbbec10506311f52be78
 Description: Canal oficial de actualizaciones de AyusOS Linux
  Instala el llavero público y activa el repositorio APT de AyusOS Linux.
 
+Package: ayusos-archive-keyring
+Architecture: all
+Version: 1.1
+Maintainer: AyusOS Linux <julioayusoalende-hue@users.noreply.github.com>
+Depends: ca-certificates, ayusos-release (>= 1.1)
+Filename: ./ayusos-archive-keyring_1.1_all.deb
+Size: 1368
+MD5sum: 334832ac75e570d98a58c5ecc6313caf
+SHA1: 35647002fb3153e54713f4bae84068defa0649da
+SHA256: ee89bba66b8d6aec1928cf8c4b436284bf803880ef01a6e352f3f714ffbb85ff
+SHA512: 9ae89d43817c191204fee6af2d92516c94ed90ae5a99834620b0c7d55c9699c549ae96d87b9ae13f7b3c8867e98ef7c39ba50a4281a0d534c61c45e5162baf35
+Description: Canal oficial de actualizaciones de AyusOS Linux
+ Instala el llavero público y activa el repositorio APT de AyusOS Linux.
+
 Package: ayusos-release
 Architecture: all
 Version: 1.1
@@ -23,6 +37,20 @@ MD5sum: 8d8ec3ff41c50483caba02a468a31f4a
 SHA1: 2438e33847719388ad8fe4f49594244ab45a3625
 SHA256: d6cb9fe1e9f30aa23f74a5d753d023b1ef234e285774b333b2721c9923066f5b
 SHA512: 154fc50a263beb9a27b987afb7e3fb7888efc674b83ea9a170bb1d8c8f1eb2faa5c3f6ceb8ab922b38be8ae9c5aab3353a4e5d6ccd4b2ebb10d9f720153def66
+Description: Identidad, aplicaciones y actualización de AyusOS Linux
+ Conjunto de aplicaciones y ajustes de AyusOS para Debian 13.
+
+Package: ayusos-release
+Architecture: all
+Version: 1.2
+Maintainer: AyusOS Linux <julioayusoalende-hue@users.noreply.github.com>
+Depends: base-files (>= 13), base-files (<< 14), acl, aio-debian-gui, btrfs-progs, celluloid, dconf-cli, deluge, kitty, libreoffice-gtk3, pkexec, python3-apt, timeshift
+Filename: ./ayusos-release_1.2_all.deb
+Size: 3104228
+MD5sum: 317ed05a9d32208b5572f8e8014b7343
+SHA1: 885dc0880717bb971330546b4e4a4dde1eaf0a23
+SHA256: 051132d2b477a41d817cb4b8ae8b42bf7744a2b58c9ffd24382ca6f111a46b2f
+SHA512: e24d6fe4ac7aa733fdd74976e20c5386dbc51ca88cbc8e99ab461b772d6e801b3e670e320b32448efdb6cefe8642145b013968da7aa5b4e597bf10022531d022
 Description: Identidad, aplicaciones y actualización de AyusOS Linux
  Conjunto de aplicaciones y ajustes de AyusOS para Debian 13.
 

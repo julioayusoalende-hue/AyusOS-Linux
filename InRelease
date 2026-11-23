@@ -1,27 +1,23 @@
 -----BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA512
+Hash: SHA256
 
 Architectures: amd64 all
-Date: Sun, 22 Nov 2026 21:58:05 +0000
+Date: Mon, 23 Nov 2026 08:02:01 +0000
 Description: Canal estable de AyusOS Linux
 Label: AyusOS
 Origin: AyusOS
 MD5Sum:
- 5a8a082c2ee7aa6de5f3ec85751a937b             1457 Packages
- c502ef16d0b2f8a4dfd810d173f67438              135 Release
+ fa35594212e819f468feb766470f4f18             2917 Packages
 SHA1:
- e1261fba72a354bd79ec2633bfd29fc8b76b0624             1457 Packages
- bce3ee8c96e3683b69a4535bdefe1ad90fa40551              135 Release
+ f9ede06c6569d4c182336479bdd82a8cad5be168             2917 Packages
 SHA256:
- b7e67b7f6c219f13d7f04df5d1bee7263ff3b53b0a5414937a36381c3d0cbefa             1457 Packages
- 8c9db21bc176a0657e34aa9eb706e3090c1a7b537d129230c3f9d4f14fe9b649              135 Release
+ 5a0a767f20359f8126ec24b3edeff73dec0d6ef46a546b86afdec11b89fbbacf             2917 Packages
 SHA512:
- 6ecf9e42b25ba8a98107acaf12efb4cf7e32d24bf91549640e401fc3801e18fd34915798a98ce376f025380865836ae06d4e9e0d108a450e3035b15c114e9982             1457 Packages
- 795457388ad7df6a213c6b9fa194f316a6e54cff99247af4c179fe1d4f226c6d5fc8c1a67c538ea19d21f9f963bccc0dcec55f496860f62517f18818f7f6155f              135 Release
+ 28d67deda3218db4bbc59d19ee4c2d8f67a55659ba7f079e6462e208983aac496a2132a4701b35e818510f837c2dc38323fdbaaf98e930ae7c2be5ee9a48cc8c             2917 Packages
 -----BEGIN PGP SIGNATURE-----
 
-iHUEARYKAB0WIQQDfYjOfy15GPL9nf1QBt5cDO+PdgUCawNlbQAKCRBQBt5cDO+P
-di1cAQDD4e3pajMq9ox3hQBNeSozTAHWMgVC9j5zS2LQg+tPfQD+NGohh6Gu60qc
-ai93lHAjZm/YBa4on2n//eeI73zMVQg=
-=fl8u
+iHUEARYIAB0WIQTL5+AuqtCYEM5Q2K8WsMh2X4iLGAUCawPzKQAKCRAWsMh2X4iL
+GPvIAQDyiJ2mrgdLKqR8h+i6IUKk3s439nTC4lrqNQJdh0cKiQEAltOlgL1kHjUb
+PU8ZKYIVDNvw+6yyDlGoIus0FB+KUw4=
+=HGqT
 -----END PGP SIGNATURE-----
