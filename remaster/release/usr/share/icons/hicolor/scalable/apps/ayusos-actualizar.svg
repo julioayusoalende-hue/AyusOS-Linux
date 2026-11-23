@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <title>Actualizar AyusOS</title>
+  <defs>
+    <linearGradient id="granate" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#f22d48"/>
+      <stop offset=".52" stop-color="#b80d31"/>
+      <stop offset="1" stop-color="#59051b"/>
+    </linearGradient>
+    <linearGradient id="plata" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#fff"/>
+      <stop offset="1" stop-color="#eee2e7"/>
+    </linearGradient>
+  </defs>
+  <circle cx="64" cy="67" r="58" fill="#410611"/>
+  <circle cx="64" cy="63" r="57" fill="url(#granate)" stroke="#fa5570" stroke-width="2"/>
+  <path d="M18 43a50 50 0 0 1 75-23" fill="none" stroke="#ff91a3" stroke-opacity=".55" stroke-width="2" stroke-linecap="round"/>
+  <g fill="none" stroke="url(#plata)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M29 52a37 37 0 0 1 68-6m0-14v14H83"/>
+    <path d="M99 74a37 37 0 0 1-68 6m0 14V80h10"/>
+  </g>
+  <path transform="translate(0 -4)" fill="url(#plata)" fill-rule="evenodd" d="M43 80l16-37h10l16 37H74l-3-8H57l-3 8H43zm17-16h8l-4-10-4 10z"/>
+</svg>

@@ -1,0 +1,81 @@
+#!/usr/bin/python3 -I
+"""Actualiza el paquete de versión desde un repositorio APT de AyusOS."""
+import fcntl
+from functools import cmp_to_key
+import os
+from pathlib import Path
+import subprocess
+import sys
+
+import apt
+import apt_pkg
+
+
+RELEASE = "ayusos-release"
+SNAPSHOT = "/usr/local/libexec/ayusos-timeshift"
+APT = ["/usr/bin/apt-get", "-o", "APT::Update::Error-Mode=any",
+       "-o", "Acquire::AllowInsecureRepositories=false",
+       "-o", "Acquire::AllowDowngradeToInsecureRepositories=false",
+       "-o", "APT::Get::AllowUnauthenticated=false"]
+
+
+def main():
+    if os.geteuid() != 0 or len(sys.argv) != 1:
+        sys.exit("Abre Actualizar AyusOS desde el menú de aplicaciones.")
+    if Path("/run/live/medium").is_dir() or "boot=live" in Path("/proc/cmdline").read_text().split():
+        sys.exit("El actualizador está disponible en un sistema AyusOS instalado.")
+    sources = Path("/etc/apt/sources.list.d/ayusos.sources")
+    if not sources.is_file():
+        print("El canal de nuevas versiones de AyusOS aún no está configurado.")
+        return
+    with sources.open() as source_file:
+        entries = [dict(entry) for entry in apt_pkg.TagFile(source_file)]
+    if (len(entries) != 1
+            or entries[0].get("Signed-By") != "/usr/share/keyrings/ayusos-archive.gpg"
+            or any(key.lower() in ("trusted", "allow-insecure", "allow-downgrade-to-insecure")
+                   for key in entries[0])):
+        sys.exit("El canal de AyusOS debe usar el llavero oficial con verificación de firma.")
+    if (not Path("/boot/grub/grub.cfg").is_file()
+            or subprocess.run([SNAPSHOT, "compatible"], check=False).returncode):
+        sys.exit("Se necesita un sistema Btrfs compatible con Timeshift y GRUB.")
+    # Comparte el bloqueo con AiO para no competir con el mantenimiento programado.
+    lock_dir = Path("/run/aio-debian-gui")
+    lock_dir.mkdir(mode=0o755, exist_ok=True)
+    fd = os.open(lock_dir / "maintenance.lock", os.O_WRONLY | os.O_CREAT | os.O_NOFOLLOW, 0o600)
+    with os.fdopen(fd, "w") as lock_file:
+        fcntl.flock(lock_file, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        subprocess.run([*APT, "update"], check=True)
+        cache = apt.Cache()
+        package = cache[RELEASE]
+        installed = package.installed.version
+        newer = []
+        for version in package.versions:
+            origins = [origin for origin in version.origins if origin.archive != "now"]
+            if (apt_pkg.version_compare(version.version, installed) > 0 and origins
+                    and all(origin.trusted and origin.origin == "AyusOS" for origin in origins)):
+                newer.append(version.version)
+        if not newer:
+            print(f"AyusOS {installed} ya está al día en el canal configurado.")
+            return
+        latest = max(newer, key=cmp_to_key(apt_pkg.version_compare))
+        install = ["--no-remove", "install", f"{RELEASE}={latest}"]
+        print(f"Actualización de AyusOS {installed} a {latest}", flush=True)
+        subprocess.run([*APT, "--simulate", *install], check=True)
+        if input("¿Instalar esta actualización con una instantánea de Timeshift? [s/N] ").strip().lower() != "s":
+            print("Actualización cancelada.")
+            return
+        env = dict(os.environ, DEBIAN_FRONTEND="noninteractive", NEEDRESTART_MODE="l")
+        # El gancho de APT de AyusOS crea la instantánea antes de invocar dpkg.
+        if not Path("/etc/apt/apt.conf.d/80ayusos-timeshift").is_file():
+            sys.exit("No está configurada la creación de instantáneas antes de actualizar.")
+        subprocess.run([*APT, "-y", "-o", "Dpkg::Options::=--force-confold", *install], env=env, check=True)
+        print(f"AyusOS {latest} se ha instalado. Reinicia para completar la actualización.")
+
+
+if __name__ == "__main__":
+    try:
+        main()
+    except BlockingIOError:
+        sys.exit("Hay otro mantenimiento de AiO en curso. Vuelve a intentarlo cuando termine.")
+    except (OSError, KeyError, EOFError, subprocess.CalledProcessError) as exc:
+        sys.exit(f"No se pudo completar la actualización: {exc}")

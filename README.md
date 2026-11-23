@@ -16,6 +16,16 @@ Un escritorio para trabajar y una herramienta gráfica para mantenerlo. Arranca 
 
 **Edición preliminar 0.1 para amd64.** Este repositorio contiene las fuentes para generar la imagen Live. La compilación completa y las pruebas de arranque e instalación están pendientes.
 
+## Construir AyusOS Linux 1.2
+
+La versión 1.2 parte de la ISO estable 1.1 con el icono del actualizador. Conserva Calamares y añade el recorrido durante la instalación y seis fondos claros y oscuros. La receta comprueba el SHA-256 de la ISO base antes de reconstruirla.
+
+```bash
+sudo apt install xorriso squashfs-tools
+sudo ./remaster/crear-iso-recorrido.sh AyusOS-Linux-1.1-icono-actualizador-amd64.iso AyusOS-Linux-1.2-amd64.iso
+sha256sum -c AyusOS-Linux-1.2-amd64.iso.sha256
+```
+
 ## El escritorio
 
 | Al iniciar AyusOS | Qué encontrarás |

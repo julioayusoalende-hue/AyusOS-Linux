@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Actualizar AyusOS
+Comment=Busca e instala nuevas versiones del sistema
+Icon=ayusos-actualizar
+Exec=kitty --hold --title "Actualizar AyusOS" /usr/bin/pkexec /usr/lib/ayusos/actualizar
+Categories=System;PackageManager;
+Terminal=false
