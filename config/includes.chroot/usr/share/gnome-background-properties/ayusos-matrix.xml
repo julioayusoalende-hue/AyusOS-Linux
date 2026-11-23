@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE wallpapers SYSTEM "gnome-wp-list.dtd">
+<wallpapers>
+  <wallpaper deleted="false">
+    <name>AyusOS · Matrix</name>
+    <filename>/usr/share/backgrounds/ayusos/matrix-claro.jpg</filename>
+    <filename-dark>/usr/share/backgrounds/ayusos/matrix-oscuro.jpg</filename-dark>
+    <options>zoom</options>
+  </wallpaper>
+</wallpapers>

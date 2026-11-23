@@ -1,0 +1,42 @@
+#!/bin/sh
+set -e
+
+. /usr/share/debconf/confmodule
+
+db_x_loadtemplatefile /usr/share/ayusos/backports.templates ayusos
+db_input critical ayusos/kernel-backports || [ "$?" -eq 30 ]
+db_input critical ayusos/mesa-backports || [ "$?" -eq 30 ]
+db_go || exit 10
+
+set --
+db_get ayusos/kernel-backports
+if [ "$RET" = true ]; then
+    set -- "$@" linux-image-amd64
+fi
+
+db_get ayusos/mesa-backports
+if [ "$RET" = true ]; then
+    set -- "$@" libegl-mesa0 libgbm1 libgl1-mesa-dri libglx-mesa0 mesa-vulkan-drivers
+fi
+
+[ "$#" -gt 0 ] || exit 0
+
+# Configure APT only in the installed system. Backports retains its default
+# low priority for packages that were not explicitly selected.
+cat > /target/etc/apt/sources.list.d/ayusos-backports.sources <<'SOURCES'
+Types: deb
+URIs: https://deb.debian.org/debian
+Suites: trixie-backports
+Components: main
+Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
+SOURCES
+
+if in-target apt-get -o APT::Update::Error-Mode=any update &&
+   in-target apt-get -y --no-remove -t trixie-backports install "$@"; then
+    exit 0
+fi
+
+db_input critical ayusos/backports-error || [ "$?" -eq 30 ]
+db_go || [ "$?" -eq 30 ]
+# Ask finish-install to return to its menu so the user can retry.
+exit 10

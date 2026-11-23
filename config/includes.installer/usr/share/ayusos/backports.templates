@@ -1,0 +1,29 @@
+Template: ayusos/kernel-backports
+Type: boolean
+Default: false
+Description: Install the kernel from Debian Backports?
+ Leave this unchecked to keep the Debian stable kernel. Backports provides
+ a newer kernel and requires an Internet connection.
+Description-es.UTF-8: ¿Instalar el kernel de Debian Backports?
+ Deja esta opción desmarcada para conservar el kernel de Debian estable.
+ Backports ofrece un kernel más reciente y requiere conexión a Internet.
+
+Template: ayusos/mesa-backports
+Type: boolean
+Default: false
+Description: Install Mesa from Debian Backports?
+ Leave this unchecked to keep the Debian stable graphics drivers. Backports
+ provides a newer version of Mesa and requires an Internet connection.
+Description-es.UTF-8: ¿Instalar Mesa de Debian Backports?
+ Deja esta opción desmarcada para conservar los controladores gráficos de
+ Debian estable. Backports ofrece una versión más reciente de Mesa y requiere
+ conexión a Internet.
+
+Template: ayusos/backports-error
+Type: error
+Description: Debian Backports installation failed
+ Check the Internet connection and review the installer log for details.
+ Return to the installer menu to retry the final installation step.
+Description-es.UTF-8: Ha fallado la instalación de Debian Backports
+ Comprueba la conexión a Internet y consulta el registro del instalador.
+ Vuelve al menú del instalador para repetir el paso final de la instalación.

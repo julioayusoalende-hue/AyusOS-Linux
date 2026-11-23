@@ -25,6 +25,8 @@ Un escritorio para trabajar y una herramienta gráfica para mantenerlo. Arranca 
 | **Base Debian 13** | Paquetes de Debian estable «trixie» y acceso al componente de firmware para hardware que lo necesita. |
 | **Modo Live e instalación** | La configuración genera una ISO híbrida para PC Intel y AMD de 64 bits, con instalador de Debian en el menú de arranque. |
 
+Al final de la instalación puedes elegir por separado el **kernel** y **Mesa** de Debian Backports. Ambas opciones vienen desmarcadas para conservar las versiones de Debian estable. Si eliges alguna de Backports, el instalador descarga los paquetes en ese momento y conserva el repositorio para actualizarlos después.
+
 ## AiO Debian GUI
 
 La receta integra **AiO Debian GUI 1.1.6** como paquete DEB nativo. Durante la creación de la imagen, el script descarga la versión fijada, comprueba su SHA-256 y la incorpora al sistema Live. La aplicación reconoce AyusOS y utiliza el icono de la distribución en su interfaz.
