@@ -4,7 +4,8 @@ cd "$(dirname "$0")"
 if (( EUID != 0 )); then echo 'Ejecuta sudo ./construir.sh' >&2; exit 1; fi
 if [[ $(dpkg --print-architecture) != amd64 ]]; then echo 'Se necesita un equipo amd64.' >&2; exit 1; fi
 command -v lb >/dev/null || { echo 'Instala live-build.' >&2; exit 1; }
-version=1.3
+version=${1:-1.3}
+[[ $version =~ ^[0-9]+(\.[0-9]+)*$ ]] || { echo 'Versión no válida.' >&2; exit 1; }
 destino=$PWD
 trabajo=$(mktemp -d "$PWD/compilacion.XXXXXX")
 echo "Directorio de compilación: $trabajo"
@@ -16,7 +17,7 @@ lb config --mode debian --distribution trixie --architectures amd64 --binary-ima
   --mirror-bootstrap http://deb.debian.org/debian/ --mirror-chroot http://deb.debian.org/debian/ \
   --mirror-binary http://deb.debian.org/debian/ \
   --security false --firmware-chroot false --firmware-binary false \
-  --linux-flavours amd64 --linux-packages linux-image \
+  --initsystem systemd --linux-flavours amd64 --linux-packages linux-image \
   --iso-application 'AyusOS Linux' --iso-volume AYUSOS_${version//./} \
   --bootappend-live 'boot=live components locales=es_ES.UTF-8 keyboard-layouts=es timezone=Europe/Madrid hostname=ayusos'
 # El sistema mínimo de trixie no trae gpg y live-build lo necesita en el chroot.
@@ -36,6 +37,7 @@ esperado=$(awk -v f="$aio_deb" '$2 == f || $2 == "*" f { print $1 }' SHA256SUMS)
 [[ $esperado =~ ^[0-9a-f]{64}$ ]] || { echo "SHA256SUMS no incluye $aio_deb" >&2; exit 1; }
 printf '%s  %s\n' "$esperado" "config/includes.chroot/opt/ayusos-paquetes/$aio_deb" | sha256sum --check
 printf 'AIO_DEBIAN_GUI_VERSION=%s\n' "$aio_version" > config/includes.chroot/etc/ayusos-aio-version
+printf '%s\n' "$version" > config/includes.chroot/etc/ayusos-version-build
 lb build
 install -m 0644 live-image-amd64.hybrid.iso "$destino/AyusOS-Linux-$version-amd64.iso"
 cd "$destino"

@@ -21,19 +21,19 @@ jobs:
       VERSION: ${{ inputs.version }}
     steps:
       - uses: actions/checkout@v4
-      - name: Liberar espacio e instalar live-build
+      - name: Compilar con live-build de Debian 13
         run: |
           set -euo pipefail
           [[ "$VERSION" =~ ^[0-9]+(\.[0-9]+)*$ ]]
           sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc
-          sudo apt-get update
-          sudo apt-get install -y gnupg live-build debootstrap debian-archive-keyring squashfs-tools xorriso isolinux syslinux-efi grub-pc-bin grub-efi-amd64-bin mtools dosfstools
-      - name: Compilar
-        run: |
-          set -euo pipefail
-          sed -i "s/^version=.*/version=$VERSION/" construir.sh
-          sudo ./construir.sh
-          cat compilacion.*/config/includes.chroot/etc/ayusos-aio-version
+          # live-build monta sistemas de archivos dentro del chroot.
+          docker run --rm --privileged -v "$PWD:/src" -w /src -e VERSION debian:13 bash -euc '
+            export DEBIAN_FRONTEND=noninteractive
+            apt-get update
+            apt-get install -y live-build curl ca-certificates squashfs-tools xorriso isolinux syslinux-common grub-pc-bin grub-efi-amd64-bin mtools dosfstools
+            ./construir.sh "$VERSION"
+          '
+          sha256sum --check "AyusOS-Linux-$VERSION-amd64.iso.sha256"
       - name: Publicar la versión
         run: |
           set -euo pipefail
@@ -46,7 +46,7 @@ jobs:
             rm "$iso"
           fi
           aio=$(sudo cat ../compilacion.*/config/includes.chroot/etc/ayusos-aio-version | cut -d= -f2)
-          gh release create "v$VERSION" --title "AyusOS Linux $VERSION" \
+          gh release create "v$VERSION" --target "$GITHUB_SHA" --title "AyusOS Linux $VERSION" \
             --notes "Fondos de pantalla claro y oscuro con la marca de AyusOS. Integra AiO Debian GUI $aio, la última versión estable en el momento de la compilación." \
-            -- * 
+            -- *
           gh workflow run sourceforge.yml -f tag="v$VERSION"
