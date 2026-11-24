@@ -15,7 +15,7 @@ lb config --mode debian --distribution trixie --architectures amd64 --binary-ima
   --archive-areas 'main non-free-firmware' --debian-installer live \
   --mirror-bootstrap http://deb.debian.org/debian/ --mirror-chroot http://deb.debian.org/debian/ \
   --mirror-binary http://deb.debian.org/debian/ \
-  --security false \
+  --security false --firmware-chroot false --firmware-binary false \
   --linux-flavours amd64 --linux-packages linux-image \
   --iso-application 'AyusOS Linux' --iso-volume AYUSOS_${version//./} \
   --bootappend-live 'boot=live components locales=es_ES.UTF-8 keyboard-layouts=es timezone=Europe/Madrid hostname=ayusos'
