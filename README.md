@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/julioayusoalende-hue/AIO-Debian-GUI/v1.1.6/package/usr/share/aio-debian-gui/ayusos-logo.png" width="144" alt="Logotipo de AyusOS Linux">
+<img src="https://raw.githubusercontent.com/julioayusoalende-hue/AIO-Debian-GUI/v1.2.0/package/usr/share/aio-debian-gui/ayusos-logo.png" width="144" alt="Logotipo de AyusOS Linux">
 
 # AyusOS Linux
 
@@ -14,7 +14,7 @@ Un escritorio para trabajar y una herramienta gráfica para mantenerlo. Arranca 
 
 ---
 
-**Edición preliminar 0.1 para amd64.** Este repositorio contiene las fuentes para generar la imagen Live. La compilación completa y las pruebas de arranque e instalación están pendientes.
+**Edición preliminar 0.2 para amd64.** Este repositorio contiene las fuentes para generar la imagen Live. La compilación completa y las pruebas de arranque e instalación están pendientes.
 
 ## El escritorio
 
@@ -27,9 +27,9 @@ Un escritorio para trabajar y una herramienta gráfica para mantenerlo. Arranca 
 
 ## AiO Debian GUI
 
-La receta integra **AiO Debian GUI 1.1.6** como paquete DEB nativo. Durante la creación de la imagen, el script descarga la versión fijada, comprueba su SHA-256 y la incorpora al sistema Live. La aplicación reconoce AyusOS y utiliza el icono de la distribución en su interfaz.
+La receta integra **AiO Debian GUI** como paquete DEB nativo. En cada compilación, el script descarga la última versión estable publicada, comprueba su SHA-256 (SHA256SUMS de la release) y la incorpora al sistema Live. La aplicación reconoce AyusOS y utiliza el icono de la distribución en su interfaz.
 
-![Vista de mantenimiento de AiO Debian GUI con las opciones de actualización y limpieza](https://raw.githubusercontent.com/julioayusoalende-hue/AIO-Debian-GUI/v1.1.6/docs/capturas/mantenimiento.png)
+![Vista de mantenimiento de AiO Debian GUI con las opciones de actualización y limpieza](https://raw.githubusercontent.com/julioayusoalende-hue/AIO-Debian-GUI/v1.2.0/docs/capturas/mantenimiento.png)
 
 *Captura del proyecto AiO Debian GUI. La sección de mantenimiento reúne la actualización de paquetes y la limpieza del sistema.*
 
@@ -41,7 +41,7 @@ La receta integra **AiO Debian GUI 1.1.6** como paquete DEB nativo. Durante la c
 <details>
 <summary><strong>Ver la pantalla de copias de seguridad</strong></summary>
 
-![Panel Backup de AiO Debian GUI para copiar y restaurar la configuración](https://raw.githubusercontent.com/julioayusoalende-hue/AIO-Debian-GUI/v1.1.6/docs/capturas/backup.png)
+![Panel Backup de AiO Debian GUI para copiar y restaurar la configuración](https://raw.githubusercontent.com/julioayusoalende-hue/AIO-Debian-GUI/v1.2.0/docs/capturas/backup.png)
 
 </details>
 
@@ -57,10 +57,10 @@ sudo apt install git live-build curl ca-certificates
 git clone https://github.com/julioayusoalende-hue/AyusOS-Linux.git
 cd AyusOS-Linux
 sudo ./construir.sh
-sha256sum -c AyusOS-Linux-0.1-amd64.iso.sha256
+sha256sum -c AyusOS-Linux-0.2-amd64.iso.sha256
 ```
 
-La imagen **AyusOS-Linux-0.1-amd64.iso** queda junto al script. Cada compilación utiliza su propio directorio `compilacion.*`. Si se interrumpe, entra en ese directorio y ejecuta `sudo lb clean --purge` antes de eliminarlo.
+La imagen **AyusOS-Linux-0.2-amd64.iso** queda junto al script. Cada compilación utiliza su propio directorio `compilacion.*`. Si se interrumpe, entra en ese directorio y ejecuta `sudo lb clean --purge` antes de eliminarlo.
 
 ### Probar en GNOME Cajas
 

@@ -1,0 +1,9 @@
+[org/gnome/desktop/background]
+picture-uri='file:///usr/share/backgrounds/ayusos/ayusos-claro.jpg'
+picture-uri-dark='file:///usr/share/backgrounds/ayusos/ayusos-oscuro.jpg'
+picture-options='zoom'
+primary-color='#7a0c20'
+
+[org/gnome/desktop/screensaver]
+picture-uri='file:///usr/share/backgrounds/ayusos/ayusos-oscuro.jpg'
+picture-options='zoom'
