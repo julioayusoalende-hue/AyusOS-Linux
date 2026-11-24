@@ -14,7 +14,7 @@ Un escritorio para trabajar y una herramienta gráfica para mantenerlo. Arranca 
 
 ---
 
-**Edición preliminar 0.1 para amd64.** Este repositorio contiene las fuentes para generar la imagen Live. La compilación completa y las pruebas de arranque e instalación están pendientes.
+**Candidata corregida de AyusOS 1.3 para amd64.** Se remasteriza la ISO oficial 1.2 en lugar de generar un sistema desde cero. La candidata no sustituye la descarga pública hasta que se compruebe su funcionamiento.
 
 ## Construir AyusOS Linux 1.2
 
@@ -33,11 +33,11 @@ sha256sum -c AyusOS-Linux-1.2-amd64.iso.sha256
 | **Sesión GNOME** | Escritorio GNOME, inicio de sesión con GDM y conexiones de red gestionadas por NetworkManager. |
 | **Español de España** | Sesión Live con teclado español, horario de Madrid y Firefox ESR con traducción al español. |
 | **Base Debian 13** | Paquetes de Debian estable «trixie» y acceso al componente de firmware para hardware que lo necesita. |
-| **Modo Live e instalación** | La configuración genera una ISO híbrida para PC Intel y AMD de 64 bits, con instalador de Debian en el menú de arranque. |
+| **Modo Live e instalación** | La candidata conserva el arranque híbrido, Calamares y su recorrido en español tal como venían en AyusOS 1.2. |
 
 ## AiO Debian GUI
 
-La receta integra **AiO Debian GUI 1.1.6** como paquete DEB nativo. Durante la creación de la imagen, el script descarga la versión fijada, comprueba su SHA-256 y la incorpora al sistema Live. La aplicación reconoce AyusOS y utiliza el icono de la distribución en su interfaz.
+La receta de la candidata actualiza **AiO Debian GUI** al último DEB estable publicado en su repositorio y comprueba el SHA-256 antes de instalarlo. La compilación se detiene si APT necesita quitar o actualizar otros paquetes de la base. Solo se permiten dependencias nuevas cuando son necesarias.
 
 ![Vista de mantenimiento de AiO Debian GUI con las opciones de actualización y limpieza](https://raw.githubusercontent.com/julioayusoalende-hue/AIO-Debian-GUI/v1.1.6/docs/capturas/mantenimiento.png)
 
@@ -59,18 +59,13 @@ La receta integra **AiO Debian GUI 1.1.6** como paquete DEB nativo. Durante la c
 
 ## Construir la ISO
 
-En Debian 13 amd64, con conexión a Internet y espacio para el sistema descomprimido y la imagen, ejecuta:
+Usa la [ISO oficial 1.2](https://github.com/julioayusoalende-hue/AyusOS-Linux/releases/tag/v1.2), no la receta histórica `construir.sh`. El remaster verifica su SHA-256 y conserva la selección de aplicaciones, Calamares y el resto de personalizaciones. Añade los dos fondos sin quitar los existentes y cambia solo los valores predeterminados del fondo de escritorio, no el de bloqueo.
 
 ```bash
-sudo apt update
-sudo apt install git live-build curl ca-certificates
-git clone https://github.com/julioayusoalende-hue/AyusOS-Linux.git
-cd AyusOS-Linux
-sudo ./construir.sh
-sha256sum -c AyusOS-Linux-0.1-amd64.iso.sha256
+sudo apt install curl ca-certificates xorriso squashfs-tools
+sudo bash remaster/crear-iso-1.3.sh AyusOS-Linux-1.2-amd64.iso AyusOS-Linux-1.3-candidata-amd64.iso
+sha256sum -c AyusOS-Linux-1.3-candidata-amd64.iso.sha256
 ```
-
-La imagen **AyusOS-Linux-0.1-amd64.iso** queda junto al script. Cada compilación utiliza su propio directorio `compilacion.*`. Si se interrumpe, entra en ese directorio y ejecuta `sudo lb clean --purge` antes de eliminarlo.
 
 ### Probar en GNOME Cajas
 
