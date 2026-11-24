@@ -2,10 +2,10 @@
 set -eu
 cat > /etc/ayusos-release <<'RELEASE'
 NAME="AyusOS Linux"
-PRETTY_NAME="AyusOS Linux 0.2 (base Debian 13)"
+PRETTY_NAME="AyusOS Linux 1.3 (base Debian 13)"
 ID=ayusos
 ID_LIKE=debian
-VERSION_ID="0.2"
+VERSION_ID="1.3"
 VERSION_CODENAME=trixie
 DEBIAN_CODENAME=trixie
 RELEASE

@@ -14,7 +14,7 @@ Un escritorio para trabajar y una herramienta gráfica para mantenerlo. Arranca 
 
 ---
 
-**Edición preliminar 0.2 para amd64.** Este repositorio contiene las fuentes para generar la imagen Live. La compilación completa y las pruebas de arranque e instalación están pendientes.
+**Edición preliminar 1.3 para amd64.** Este repositorio contiene las fuentes para generar la imagen Live. La compilación completa y las pruebas de arranque e instalación están pendientes.
 
 ## El escritorio
 
@@ -57,10 +57,10 @@ sudo apt install git live-build curl ca-certificates
 git clone https://github.com/julioayusoalende-hue/AyusOS-Linux.git
 cd AyusOS-Linux
 sudo ./construir.sh
-sha256sum -c AyusOS-Linux-0.2-amd64.iso.sha256
+sha256sum -c AyusOS-Linux-1.3-amd64.iso.sha256
 ```
 
-La imagen **AyusOS-Linux-0.2-amd64.iso** queda junto al script. Cada compilación utiliza su propio directorio `compilacion.*`. Si se interrumpe, entra en ese directorio y ejecuta `sudo lb clean --purge` antes de eliminarlo.
+La imagen **AyusOS-Linux-1.3-amd64.iso** queda junto al script. Cada compilación utiliza su propio directorio `compilacion.*`. Si se interrumpe, entra en ese directorio y ejecuta `sudo lb clean --purge` antes de eliminarlo.
 
 ### Probar en GNOME Cajas
 

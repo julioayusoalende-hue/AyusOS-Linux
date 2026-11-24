@@ -4,7 +4,7 @@ cd "$(dirname "$0")"
 if (( EUID != 0 )); then echo 'Ejecuta sudo ./construir.sh' >&2; exit 1; fi
 if [[ $(dpkg --print-architecture) != amd64 ]]; then echo 'Se necesita un equipo amd64.' >&2; exit 1; fi
 command -v lb >/dev/null || { echo 'Instala live-build.' >&2; exit 1; }
-version=0.2
+version=1.3
 destino=$PWD
 trabajo=$(mktemp -d "$PWD/compilacion.XXXXXX")
 echo "Directorio de compilación: $trabajo"
@@ -13,6 +13,9 @@ mkdir -p "$trabajo/config/includes.chroot/etc"
 cd "$trabajo"
 lb config --distribution trixie --architectures amd64 --binary-images iso-hybrid \
   --archive-areas 'main non-free-firmware' --debian-installer live \
+  --mirror-bootstrap http://deb.debian.org/debian/ --mirror-chroot http://deb.debian.org/debian/ \
+  --mirror-chroot-security http://deb.debian.org/debian-security/ --mirror-binary http://deb.debian.org/debian/ \
+  --mirror-binary-security http://deb.debian.org/debian-security/ \
   --iso-application 'AyusOS Linux' --iso-volume AYUSOS_${version//./} \
   --bootappend-live 'boot=live components locales=es_ES.UTF-8 keyboard-layouts=es timezone=Europe/Madrid hostname=ayusos'
 # live-build instala los DEB locales y resuelve sus dependencias en el chroot.
