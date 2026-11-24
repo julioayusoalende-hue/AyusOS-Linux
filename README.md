@@ -8,13 +8,36 @@
 
 Un escritorio para trabajar y una herramienta gráfica para mantenerlo. Arranca AyusOS desde un USB, explora GNOME y decide cuándo instalarlo.
 
-[El escritorio](#el-escritorio) · [AiO Debian GUI](#aio-debian-gui) · [Construir la ISO](#construir-la-iso)
+**[Descargar AyusOS Linux 1.3 (amd64)](https://github.com/julioayusoalende-hue/AyusOS-Linux/releases/tag/v1.3)**
+
+[Capturas](#ayusos-en-imágenes) · [El escritorio](#el-escritorio) · [AiO Debian GUI](#aio-debian-gui) · [Construir la ISO](#construir-la-iso)
 
 </div>
 
 ---
 
-**Edición preliminar 0.1 para amd64.** Este repositorio contiene las fuentes para generar la imagen Live. La compilación completa y las pruebas de arranque e instalación están pendientes.
+## AyusOS en imágenes
+
+[![Escritorio GNOME con el fondo claro de AyusOS y el dock de aplicaciones](docs/capturas/escritorio-claro.png)](docs/capturas/escritorio-claro.png)
+
+| Modo oscuro | Ajustes de apariencia |
+| --- | --- |
+| [![Escritorio GNOME con el fondo oscuro de AyusOS](docs/capturas/escritorio-oscuro.png)](docs/capturas/escritorio-oscuro.png) | [![Selector de tema, acento y fondos de GNOME](docs/capturas/apariencia.png)](docs/capturas/apariencia.png) |
+
+| Bienvenida de Calamares | Recorrido durante la instalación |
+| --- | --- |
+| [![Pantalla de bienvenida del instalador Calamares](docs/capturas/calamares.png)](docs/capturas/calamares.png) | [![Diapositiva de presentación de AyusOS durante la instalación](docs/capturas/recorrido-instalacion.png)](docs/capturas/recorrido-instalacion.png) |
+
+<details>
+<summary>Ver las aplicaciones y AiO Debian GUI</summary>
+
+| Aplicaciones de GNOME | Panel de mantenimiento de AiO Debian GUI |
+| --- | --- |
+| [![Cuadrícula de aplicaciones de AyusOS](docs/capturas/aplicaciones.png)](docs/capturas/aplicaciones.png) | [![Panel de mantenimiento de AiO Debian GUI en AyusOS](docs/capturas/aio-debian-gui.png)](docs/capturas/aio-debian-gui.png) |
+
+</details>
+
+*Capturas de una compilación de prueba de la 1.3. En algunas se ve Kitty en el dock; la versión publicada incluye Terminal de GNOME.*
 
 ## Construir AyusOS Linux 1.2
 
@@ -33,11 +56,11 @@ sha256sum -c AyusOS-Linux-1.2-amd64.iso.sha256
 | **Sesión GNOME** | Escritorio GNOME, inicio de sesión con GDM y conexiones de red gestionadas por NetworkManager. |
 | **Español de España** | Sesión Live con teclado español, horario de Madrid y Firefox ESR con traducción al español. |
 | **Base Debian 13** | Paquetes de Debian estable «trixie» y acceso al componente de firmware para hardware que lo necesita. |
-| **Modo Live e instalación** | La configuración genera una ISO híbrida para PC Intel y AMD de 64 bits, con instalador de Debian en el menú de arranque. |
+| **Modo Live e instalación** | La ISO para PC Intel y AMD de 64 bits permite probar el escritorio en modo Live e instalarlo con Calamares. |
 
 ## AiO Debian GUI
 
-La receta integra **AiO Debian GUI 1.1.6** como paquete DEB nativo. Durante la creación de la imagen, el script descarga la versión fijada, comprueba su SHA-256 y la incorpora al sistema Live. La aplicación reconoce AyusOS y utiliza el icono de la distribución en su interfaz.
+AyusOS 1.3 incluye **AiO Debian GUI 1.2.1**. La receta de la 1.3 descarga en cada compilación la última versión estable publicada y comprueba su SHA-256 antes de incorporarla al sistema Live. La aplicación reconoce AyusOS y utiliza el icono de la distribución en su interfaz.
 
 ![Vista de mantenimiento de AiO Debian GUI con las opciones de actualización y limpieza](https://raw.githubusercontent.com/julioayusoalende-hue/AIO-Debian-GUI/v1.1.6/docs/capturas/mantenimiento.png)
 
@@ -59,6 +82,11 @@ La receta integra **AiO Debian GUI 1.1.6** como paquete DEB nativo. Durante la c
 
 ## Construir la ISO
 
+Para la versión actual, consulta las [instrucciones de remasterización de AyusOS 1.3](https://github.com/julioayusoalende-hue/AyusOS-Linux/tree/v1.3#construir-la-iso), que parten de la ISO de AyusOS 1.2 y conservan Calamares.
+
+<details>
+<summary>Ver la receta histórica de compilación de la 0.1</summary>
+
 En Debian 13 amd64, con conexión a Internet y espacio para el sistema descomprimido y la imagen, ejecuta:
 
 ```bash
@@ -72,11 +100,13 @@ sha256sum -c AyusOS-Linux-0.1-amd64.iso.sha256
 
 La imagen **AyusOS-Linux-0.1-amd64.iso** queda junto al script. Cada compilación utiliza su propio directorio `compilacion.*`. Si se interrumpe, entra en ese directorio y ejecuta `sudo lb clean --purge` antes de eliminarlo.
 
+</details>
+
 ### Probar en GNOME Cajas
 
 1. Crea una máquina virtual desde la ISO, asígnale 4 GB de RAM y arranca la sesión Live.
 2. Comprueba el idioma, el teclado y el nombre de la distribución en **Configuración → Sistema → Acerca de**. Busca **AiO Debian GUI** en la vista de aplicaciones y abre su diagnóstico.
-3. Para probar la instalación, arranca de nuevo desde la ISO, elige el instalador y selecciona un disco virtual vacío. Expulsa la ISO y verifica que GNOME arranca desde el disco.
+3. Para probar la instalación, arranca la sesión Live, abre **Instalar AyusOS** y selecciona un disco virtual vacío. Expulsa la ISO y verifica que GNOME arranca desde el disco.
 
 ### Personalizar la imagen
 
