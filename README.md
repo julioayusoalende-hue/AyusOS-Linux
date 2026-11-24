@@ -10,7 +10,7 @@ Un escritorio para trabajar y una herramienta gráfica para mantenerlo. Arranca 
 
 **[Descargar AyusOS Linux 1.3 (amd64)](https://github.com/julioayusoalende-hue/AyusOS-Linux/releases/tag/v1.3)**
 
-[Capturas](#ayusos-en-imágenes) · [El escritorio](#el-escritorio) · [AiO Debian GUI](#aio-debian-gui) · [Construir la ISO](#construir-la-iso)
+[Probar desde un USB](#probar-desde-un-usb) · [Capturas](#ayusos-en-imágenes) · [El escritorio](#el-escritorio) · [AiO Debian GUI](#aio-debian-gui) · [Construir la ISO](#construir-la-iso)
 
 </div>
 
@@ -38,6 +38,15 @@ Un escritorio para trabajar y una herramienta gráfica para mantenerlo. Arranca 
 </details>
 
 *Capturas de una compilación de prueba de la 1.3. En algunas se ve Kitty en el dock; la versión publicada incluye Terminal de GNOME.*
+
+## Probar desde un USB
+
+Necesitas un PC Intel o AMD de 64 bits y una memoria USB de **4 GB o más**. Haz primero una copia de lo que haya en ella: **grabar la ISO borra todo el contenido del USB**.
+
+1. **Descarga la ISO completa de AyusOS 1.3** desde el enlace a SourceForge que aparece en la [publicación oficial](https://github.com/julioayusoalende-hue/AyusOS-Linux/releases/tag/v1.3). Descarga también el archivo SHA‑256 y guárdalos juntos. En Linux, abre una terminal en esa carpeta y ejecuta `sha256sum -c -- *.iso.sha256` con solo los archivos de esta descarga. Si la suma no coincide, vuelve a descargar la imagen.
+2. **Graba la imagen en el USB.** En GNOME Discos, selecciona la memoria USB y usa **Restaurar imagen de disco** para elegir la ISO. En Windows puedes usar Rufus. Antes de confirmar, comprueba el nombre y la capacidad de la unidad elegida: debe ser el USB, no el disco interno. No basta con copiar el archivo `.iso` a la memoria.
+3. **Arranca desde el USB.** Reinicia con la memoria conectada y elígela en el menú de arranque del equipo. La tecla depende del fabricante; suele ser **F12**, **Esc** o **F9**.
+4. **Prueba el escritorio en modo Live.** Elige la opción de arranque Live para explorar GNOME sin instalar el sistema. Si solo quieres probarlo, no abras **Instalar AyusOS** (Calamares). Al terminar, apaga el equipo y retira el USB para volver a tu sistema habitual.
 
 ## Construir AyusOS Linux 1.2
 
