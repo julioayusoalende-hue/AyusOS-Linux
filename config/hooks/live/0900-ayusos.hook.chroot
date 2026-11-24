@@ -13,5 +13,8 @@ ln -sfn ayusos-release /etc/os-release
 sed -i 's/^# *es_ES.UTF-8 UTF-8/es_ES.UTF-8 UTF-8/' /etc/locale.gen
 locale-gen es_ES.UTF-8
 update-locale LANG=es_ES.UTF-8
+apt-get update
+apt-get install -y /opt/ayusos-paquetes/*.deb
+rm -rf /opt/ayusos-paquetes /var/lib/apt/lists/*
 dconf update
 systemctl set-default graphical.target
