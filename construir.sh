@@ -42,3 +42,4 @@ lb build
 install -m 0644 live-image-amd64.hybrid.iso "$destino/AyusOS-Linux-$version-amd64.iso"
 cd "$destino"
 sha256sum AyusOS-Linux-$version-amd64.iso > AyusOS-Linux-$version-amd64.iso.sha256
+printf '%s\n' "$aio_version" > AyusOS-Linux-$version-amd64.aio-version

@@ -34,10 +34,24 @@ jobs:
             ./construir.sh "$VERSION"
           '
           sha256sum --check "AyusOS-Linux-$VERSION-amd64.iso.sha256"
+      - name: Guardar la ISO verificada
+        uses: actions/upload-artifact@v4
+        with:
+          name: AyusOS-Linux-${{ inputs.version }}-amd64
+          path: |
+            AyusOS-Linux-${{ inputs.version }}-amd64.iso
+            AyusOS-Linux-${{ inputs.version }}-amd64.iso.sha256
+            AyusOS-Linux-${{ inputs.version }}-amd64.aio-version
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 7
       - name: Publicar la versión
         run: |
           set -euo pipefail
-          iso="AyusOS-Linux-$VERSION-amd64.iso"
+          base="AyusOS-Linux-$VERSION-amd64"
+          iso="$base.iso"
+          read -r aio < "$base.aio-version"
+          [[ "$aio" =~ ^[0-9][A-Za-z0-9.+~-]*$ ]]
           mkdir out
           mv "$iso" "$iso.sha256" out/
           cd out
@@ -45,7 +59,6 @@ jobs:
             split -b 1900M -d -a 2 --numeric-suffixes=1 "$iso" "$iso.part-"
             rm "$iso"
           fi
-          aio=$(sudo cat ../compilacion.*/config/includes.chroot/etc/ayusos-aio-version | cut -d= -f2)
           gh release create "v$VERSION" --target "$GITHUB_SHA" --title "AyusOS Linux $VERSION" \
             --notes "Fondos de pantalla claro y oscuro con la marca de AyusOS. Integra AiO Debian GUI $aio, la última versión estable en el momento de la compilación." \
             -- *
