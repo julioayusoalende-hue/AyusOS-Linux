@@ -57,6 +57,14 @@ dpkg-deb --root-owner-group --build "$work/release" "$root/tmp/ayusos-release.de
 dpkg --root="$root" --install "$root/tmp/ayusos-release.deb"
 rm -- "$root/tmp/ayusos-release.deb"
 dpkg --root="$root" --purge kitty kitty-shell-integration kitty-terminfo
+# El llavero oficial instala también ayusos.sources en el sistema que copia Calamares.
+keyring=ayusos-archive-keyring_1.1_all.deb
+curl -fL --retry 3 -o "$root/tmp/$keyring" "https://github.com/julioayusoalende-hue/AyusOS-Linux/releases/download/v1.2/$keyring"
+printf '%s  %s\n' 'ee89bba66b8d6aec1928cf8c4b436284bf803880ef01a6e352f3f714ffbb85ff' "$root/tmp/$keyring" | sha256sum --check --strict
+dpkg --root="$root" --install "$root/tmp/$keyring"
+rm -- "$root/tmp/$keyring"
+grep -Fx 'Signed-By: /usr/share/keyrings/ayusos-archive.gpg' "$root/etc/apt/sources.list.d/ayusos.sources"
+test -s "$root/usr/share/keyrings/ayusos-archive.gpg"
 chroot "$root" apt-get check
 chroot "$root" update-alternatives --set x-terminal-emulator /usr/bin/gnome-terminal.wrapper
 sed -i 's/\bkitty\.desktop\b/org.gnome.Terminal.desktop/g' "$root/etc/dconf/db/local.d/20-ayusos-extensions"
