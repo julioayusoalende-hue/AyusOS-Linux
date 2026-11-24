@@ -14,7 +14,7 @@ Un escritorio para trabajar y una herramienta gráfica para mantenerlo. Arranca 
 
 ---
 
-**Edición preliminar 1.3 para amd64.** Este repositorio contiene las fuentes para generar la imagen Live. La compilación completa y las pruebas de arranque e instalación están pendientes.
+**Versión 1.3 para amd64.** Este repositorio contiene las fuentes para generar la imagen Live, y la imagen ya está compilada y publicada: descárgala desde la [versión 1.3](https://github.com/julioayusoalende-hue/AyusOS-Linux/releases/tag/v1.3) en GitHub (en dos partes) o completa desde [SourceForge](https://downloads.sourceforge.net/project/ayusos-linux/AyusOS-Linux-1.3-amd64-6a213427993936a5.iso).
 
 ## El escritorio
 
@@ -59,6 +59,8 @@ cd AyusOS-Linux
 sudo ./construir.sh
 sha256sum -c AyusOS-Linux-1.3-amd64.iso.sha256
 ```
+
+También puedes lanzar la compilación en GitHub: en la pestaña **Actions**, abre **Compilar y publicar la ISO**, pulsa **Run workflow** y escribe la versión (por ejemplo, `1.3`). Al terminar, crea la versión con la ISO en dos partes y su SHA-256, y el flujo **Publicar ISO completa en SourceForge** espeja la imagen completa.
 
 La imagen **AyusOS-Linux-1.3-amd64.iso** queda junto al script. Cada compilación utiliza su propio directorio `compilacion.*`. Si se interrumpe, entra en ese directorio y ejecuta `sudo lb clean --purge` antes de eliminarlo.
 
