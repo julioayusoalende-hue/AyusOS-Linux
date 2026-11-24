@@ -1,0 +1,4 @@
+# El cambio de versión se confirma en el actualizador de AyusOS.
+Package: ayusos-release
+Pin: release o=AyusOS
+Pin-Priority: -1

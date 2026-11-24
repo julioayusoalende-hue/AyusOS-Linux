@@ -1,13 +1,11 @@
 #!/bin/sh
 set -eu
-version=$(cat /etc/ayusos-version-build)
-rm /etc/ayusos-version-build
-cat > /etc/ayusos-release <<RELEASE
+cat > /etc/ayusos-release <<'RELEASE'
 NAME="AyusOS Linux"
-PRETTY_NAME="AyusOS Linux $version (base Debian 13)"
+PRETTY_NAME="AyusOS Linux 0.1 (base Debian 13)"
 ID=ayusos
 ID_LIKE=debian
-VERSION_ID="$version"
+VERSION_ID="0.1"
 VERSION_CODENAME=trixie
 DEBIAN_CODENAME=trixie
 RELEASE
@@ -15,8 +13,4 @@ ln -sfn ayusos-release /etc/os-release
 sed -i 's/^# *es_ES.UTF-8 UTF-8/es_ES.UTF-8 UTF-8/' /etc/locale.gen
 locale-gen es_ES.UTF-8
 update-locale LANG=es_ES.UTF-8
-apt-get update
-apt-get install -y /opt/ayusos-paquetes/*.deb
-rm -rf /opt/ayusos-paquetes /var/lib/apt/lists/*
-dconf update
 systemctl set-default graphical.target

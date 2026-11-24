@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/julioayusoalende-hue/AIO-Debian-GUI/v1.2.0/package/usr/share/aio-debian-gui/ayusos-logo.png" width="144" alt="Logotipo de AyusOS Linux">
+<img src="https://raw.githubusercontent.com/julioayusoalende-hue/AIO-Debian-GUI/v1.1.6/package/usr/share/aio-debian-gui/ayusos-logo.png" width="144" alt="Logotipo de AyusOS Linux">
 
 # AyusOS Linux
 
@@ -14,7 +14,17 @@ Un escritorio para trabajar y una herramienta gráfica para mantenerlo. Arranca 
 
 ---
 
-**Versión 1.3 para amd64.** Este repositorio contiene las fuentes para generar la imagen Live, y la imagen ya está compilada y publicada: descárgala desde la [versión 1.3](https://github.com/julioayusoalende-hue/AyusOS-Linux/releases/tag/v1.3) en GitHub (en dos partes) o completa desde [SourceForge](https://downloads.sourceforge.net/project/ayusos-linux/AyusOS-Linux-1.3-amd64-6a213427993936a5.iso).
+**Edición preliminar 0.1 para amd64.** Este repositorio contiene las fuentes para generar la imagen Live. La compilación completa y las pruebas de arranque e instalación están pendientes.
+
+## Construir AyusOS Linux 1.2
+
+La versión 1.2 parte de la ISO estable 1.1 con el icono del actualizador. Conserva Calamares y añade el recorrido durante la instalación y seis fondos claros y oscuros. La receta comprueba el SHA-256 de la ISO base antes de reconstruirla.
+
+```bash
+sudo apt install xorriso squashfs-tools
+sudo ./remaster/crear-iso-recorrido.sh AyusOS-Linux-1.1-icono-actualizador-amd64.iso AyusOS-Linux-1.2-amd64.iso
+sha256sum -c AyusOS-Linux-1.2-amd64.iso.sha256
+```
 
 ## El escritorio
 
@@ -27,9 +37,9 @@ Un escritorio para trabajar y una herramienta gráfica para mantenerlo. Arranca 
 
 ## AiO Debian GUI
 
-La receta integra **AiO Debian GUI** como paquete DEB nativo. En cada compilación, el script descarga la última versión estable publicada, comprueba su SHA-256 (SHA256SUMS de la release) y la incorpora al sistema Live. La aplicación reconoce AyusOS y utiliza el icono de la distribución en su interfaz.
+La receta integra **AiO Debian GUI 1.1.6** como paquete DEB nativo. Durante la creación de la imagen, el script descarga la versión fijada, comprueba su SHA-256 y la incorpora al sistema Live. La aplicación reconoce AyusOS y utiliza el icono de la distribución en su interfaz.
 
-![Vista de mantenimiento de AiO Debian GUI con las opciones de actualización y limpieza](https://raw.githubusercontent.com/julioayusoalende-hue/AIO-Debian-GUI/v1.2.0/docs/capturas/mantenimiento.png)
+![Vista de mantenimiento de AiO Debian GUI con las opciones de actualización y limpieza](https://raw.githubusercontent.com/julioayusoalende-hue/AIO-Debian-GUI/v1.1.6/docs/capturas/mantenimiento.png)
 
 *Captura del proyecto AiO Debian GUI. La sección de mantenimiento reúne la actualización de paquetes y la limpieza del sistema.*
 
@@ -41,7 +51,7 @@ La receta integra **AiO Debian GUI** como paquete DEB nativo. En cada compilaci�
 <details>
 <summary><strong>Ver la pantalla de copias de seguridad</strong></summary>
 
-![Panel Backup de AiO Debian GUI para copiar y restaurar la configuración](https://raw.githubusercontent.com/julioayusoalende-hue/AIO-Debian-GUI/v1.2.0/docs/capturas/backup.png)
+![Panel Backup de AiO Debian GUI para copiar y restaurar la configuración](https://raw.githubusercontent.com/julioayusoalende-hue/AIO-Debian-GUI/v1.1.6/docs/capturas/backup.png)
 
 </details>
 
@@ -57,12 +67,10 @@ sudo apt install git live-build curl ca-certificates
 git clone https://github.com/julioayusoalende-hue/AyusOS-Linux.git
 cd AyusOS-Linux
 sudo ./construir.sh
-sha256sum -c AyusOS-Linux-1.3-amd64.iso.sha256
+sha256sum -c AyusOS-Linux-0.1-amd64.iso.sha256
 ```
 
-También puedes lanzar la compilación en GitHub: en la pestaña **Actions**, abre **Compilar y publicar la ISO**, pulsa **Run workflow** y escribe la versión (por ejemplo, `1.3`). Al terminar, crea la versión con la ISO en dos partes y su SHA-256, y el flujo **Publicar ISO completa en SourceForge** espeja la imagen completa.
-
-La imagen **AyusOS-Linux-1.3-amd64.iso** queda junto al script. Cada compilación utiliza su propio directorio `compilacion.*`. Si se interrumpe, entra en ese directorio y ejecuta `sudo lb clean --purge` antes de eliminarlo.
+La imagen **AyusOS-Linux-0.1-amd64.iso** queda junto al script. Cada compilación utiliza su propio directorio `compilacion.*`. Si se interrumpe, entra en ese directorio y ejecuta `sudo lb clean --purge` antes de eliminarlo.
 
 ### Probar en GNOME Cajas
 
