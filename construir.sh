@@ -19,7 +19,7 @@ lb config --distribution trixie --architectures amd64 --binary-images iso-hybrid
   --iso-application 'AyusOS Linux' --iso-volume AYUSOS_${version//./} \
   --bootappend-live 'boot=live components locales=es_ES.UTF-8 keyboard-layouts=es timezone=Europe/Madrid hostname=ayusos'
 # El sistema mínimo de trixie no trae gpg y live-build lo necesita en el chroot.
-printf 'LB_DEBOOTSTRAP_OPTIONS="--include=gnupg,ca-certificates"\n' >> config/bootstrap
+export DEBOOTSTRAP_OPTIONS='--include=gnupg,ca-certificates'
 # live-build instala los DEB locales y resuelve sus dependencias en el chroot.
 # Se integra siempre la última versión estable publicada de AiO Debian GUI.
 repo=https://github.com/julioayusoalende-hue/AIO-Debian-GUI
