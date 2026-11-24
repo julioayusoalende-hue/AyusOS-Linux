@@ -11,11 +11,12 @@ echo "Directorio de compilación: $trabajo"
 cp -a config "$trabajo/"
 mkdir -p "$trabajo/config/includes.chroot/etc"
 cd "$trabajo"
-lb config --distribution trixie --architectures amd64 --binary-images iso-hybrid \
+lb config --mode debian --distribution trixie --architectures amd64 --binary-images iso-hybrid \
   --archive-areas 'main non-free-firmware' --debian-installer live \
   --mirror-bootstrap http://deb.debian.org/debian/ --mirror-chroot http://deb.debian.org/debian/ \
   --mirror-chroot-security http://deb.debian.org/debian-security/ --mirror-binary http://deb.debian.org/debian/ \
   --mirror-binary-security http://deb.debian.org/debian-security/ \
+  --linux-flavours amd64 --linux-packages linux-image \
   --iso-application 'AyusOS Linux' --iso-volume AYUSOS_${version//./} \
   --bootappend-live 'boot=live components locales=es_ES.UTF-8 keyboard-layouts=es timezone=Europe/Madrid hostname=ayusos'
 # El sistema mínimo de trixie no trae gpg y live-build lo necesita en el chroot.
