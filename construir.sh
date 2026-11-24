@@ -16,6 +16,7 @@ lb config --distribution trixie --architectures amd64 --binary-images iso-hybrid
   --mirror-bootstrap http://deb.debian.org/debian/ --mirror-chroot http://deb.debian.org/debian/ \
   --mirror-chroot-security http://deb.debian.org/debian-security/ --mirror-binary http://deb.debian.org/debian/ \
   --mirror-binary-security http://deb.debian.org/debian-security/ \
+  --debootstrap-options '--include=gnupg,ca-certificates' \
   --iso-application 'AyusOS Linux' --iso-volume AYUSOS_${version//./} \
   --bootappend-live 'boot=live components locales=es_ES.UTF-8 keyboard-layouts=es timezone=Europe/Madrid hostname=ayusos'
 # live-build instala los DEB locales y resuelve sus dependencias en el chroot.
