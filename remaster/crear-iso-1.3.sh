@@ -41,21 +41,28 @@ printf 'AiO Debian GUI: %s -> %s\n' "$old" "$aio"
 apt_opts=(-o Dir::Etc::sourcelist=/etc/apt/sources.list.d/zz-sources.list -o Dir::Etc::sourceparts=-)
 cp -L -- /etc/resolv.conf "$root/etc/resolv.conf"
 chroot "$root" apt-get "${apt_opts[@]}" -o APT::Update::Error-Mode=any update
-chroot "$root" apt-get "${apt_opts[@]}" -s --no-install-recommends --no-remove install "/tmp/$asset" | tee "$work/apt-plan"
+chroot "$root" apt-get "${apt_opts[@]}" -s --no-install-recommends --no-remove install "/tmp/$asset" gnome-terminal | tee "$work/apt-plan"
 awk '$1 == "Inst" && $3 ~ /^\[/ && $2 != "aio-debian-gui" { print "Actualización no prevista: " $2 > "/dev/stderr"; fail=1 } END { exit fail }' "$work/apt-plan"
-DEBIAN_FRONTEND=noninteractive chroot "$root" apt-get "${apt_opts[@]}" -y --no-install-recommends --no-remove install "/tmp/$asset"
+DEBIAN_FRONTEND=noninteractive chroot "$root" apt-get "${apt_opts[@]}" -y --no-install-recommends --no-remove install "/tmp/$asset" gnome-terminal
 rm -- "$root/tmp/$asset"
 chroot "$root" apt-get clean
 : > "$root/etc/resolv.conf"
 find "$root/var/lib/apt/lists" -maxdepth 1 -type f ! -name lock -delete
 
-# Subir solo la versión de AyusOS, sin cambiar la identidad Debian ni el actualizador.
+# Actualizar el paquete de la distro y su lanzador antes de retirar Kitty.
 cp -a "$remaster/release" "$work/release"
 sed -i 's/^Version: 1\.2$/Version: 1.3/' "$work/release/DEBIAN/control"
 sed -i -e '/^PRETTY_NAME=/ s/1\.2/1.3/' -e 's/^AYUSOS_VERSION="1\.2"$/AYUSOS_VERSION="1.3"/' "$work/release/etc/ayusos-release"
 dpkg-deb --root-owner-group --build "$work/release" "$root/tmp/ayusos-release.deb"
 dpkg --root="$root" --install "$root/tmp/ayusos-release.deb"
 rm -- "$root/tmp/ayusos-release.deb"
+dpkg --root="$root" --purge kitty kitty-shell-integration kitty-terminfo
+chroot "$root" apt-get check
+chroot "$root" update-alternatives --set x-terminal-emulator /usr/bin/gnome-terminal.wrapper
+sed -i 's/\bkitty\.desktop\b/org.gnome.Terminal.desktop/g' "$root/etc/dconf/db/local.d/20-ayusos-extensions"
+# GDM usa su propio perfil, compilado al arrancar. Tomar el acento del escritorio.
+accent=$(grep -xE "accent-color='(blue|teal|green|yellow|orange|pink|red|purple|slate)'" "$root/etc/dconf/db/local.d/30-ayusos-yaru")
+printf '[org/gnome/desktop/interface]\n%s\n' "$accent" > "$root/usr/share/gdm/dconf/99-zz-ayusos-accent"
 branding=$root/etc/calamares/branding/ayusos
 sed -i -E '/^    (version|shortVersion|versionedName|shortVersionedName):/ s/1\.2/1.3/' "$branding/branding.desc"
 install -m 0644 "$share"/backgrounds/ayusos/ayusos-{claro,oscuro}.jpg "$root/usr/share/backgrounds/ayusos/"
@@ -67,11 +74,21 @@ chroot "$root" dconf update
 
 dpkg-query --admindir="$root/var/lib/dpkg" -W -f='${db:Status-Status}\t${binary:Package}\t${Version}\n' |
     awk -F '\t' '$1 == "installed" { print $2 "\t" $3 }' > "$work/filesystem.packages"
-# Abortar si se retiró o actualizó algún paquete que no fuera AiO o ayusos-release.
-awk -F '\t' 'NR==FNR { actual[$1]=$2; next } $1!="aio-debian-gui" && $1!="ayusos-release" && actual[$1]!=$2 { print "Paquete base alterado: " $0 > "/dev/stderr"; fail=1 } END { exit fail }' \
+# Conservar todos los paquetes de la base excepto las tres retiradas de Kitty.
+awk -F '\t' 'NR==FNR { actual[$1]=$2; next } $1 !~ /^(aio-debian-gui|ayusos-release|kitty|kitty-shell-integration|kitty-terminfo)$/ && actual[$1]!=$2 { print "Paquete base alterado: " $0 > "/dev/stderr"; fail=1 } END { exit fail }' \
     "$work/filesystem.packages" "$work/base.packages"
 grep -Fx $'calamares\t3.3.14-1' "$work/filesystem.packages"
 grep -Fx $'ayusos-release\t1.3' "$work/filesystem.packages"
+grep -E '^gnome-terminal\s' "$work/filesystem.packages"
+if grep -E '^kitty(-shell-integration|-terminfo)?\s' "$work/filesystem.packages"; then
+    echo 'Kitty sigue instalado.' >&2
+    exit 1
+fi
+test -s "$root/usr/share/applications/org.gnome.Terminal.desktop"
+test -x "$root/usr/lib/ayusos/actualizar-terminal"
+grep -F 'org.gnome.Terminal.desktop' "$root/etc/dconf/db/local.d/20-ayusos-extensions"
+chroot "$root" dconf compile /tmp/gdm-dconf.test /usr/share/gdm/dconf
+rm -- "$root/tmp/gdm-dconf.test"
 test -s "$branding/show.qml"
 grep -F 'picture-uri-dark=' "$root/etc/dconf/db/local.d/10-ayusos-branding" | grep -F 'ayusos-oscuro.jpg'
 grep -Fx "$(printf 'aio-debian-gui\t%s' "$aio")" "$work/filesystem.packages"

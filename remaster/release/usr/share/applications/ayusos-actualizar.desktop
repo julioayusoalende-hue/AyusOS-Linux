@@ -3,6 +3,6 @@ Type=Application
 Name=Actualizar AyusOS
 Comment=Busca e instala nuevas versiones del sistema
 Icon=ayusos-actualizar
-Exec=kitty --hold --title "Actualizar AyusOS" /usr/bin/pkexec /usr/lib/ayusos/actualizar
+Exec=gnome-terminal --title="Actualizar AyusOS" -- /usr/lib/ayusos/actualizar-terminal
 Categories=System;PackageManager;
 Terminal=false

@@ -59,7 +59,7 @@ La receta de la candidata actualiza **AiO Debian GUI** al último DEB estable pu
 
 ## Construir la ISO
 
-Usa la [ISO oficial 1.2](https://github.com/julioayusoalende-hue/AyusOS-Linux/releases/tag/v1.2), no la receta histórica `construir.sh`. El remaster verifica su SHA-256 y conserva la selección de aplicaciones, Calamares y el resto de personalizaciones. Añade los dos fondos sin quitar los existentes y cambia solo los valores predeterminados del fondo de escritorio, no el de bloqueo.
+Usa la [ISO oficial 1.2](https://github.com/julioayusoalende-hue/AyusOS-Linux/releases/tag/v1.2), no la receta histórica `construir.sh`. El remaster verifica su SHA-256 y conserva Calamares, las personalizaciones y la selección de aplicaciones, salvo Kitty, que se sustituye por Terminal de GNOME en el escritorio y en el actualizador. Añade los dos fondos sin quitar los existentes ni cambiar el de bloqueo. La pantalla de inicio de sesión de GDM toma el mismo acento predeterminado que el escritorio (rojo).
 
 ```bash
 sudo apt install curl ca-certificates xorriso squashfs-tools

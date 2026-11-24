@@ -2,6 +2,6 @@ Package: ayusos-release
 Version: 1.2
 Architecture: all
 Maintainer: AyusOS Linux <julioayusoalende-hue@users.noreply.github.com>
-Depends: base-files (>= 13), base-files (<< 14), acl, aio-debian-gui, btrfs-progs, celluloid, dconf-cli, deluge, kitty, libreoffice-gtk3, pkexec, python3-apt, timeshift
+Depends: base-files (>= 13), base-files (<< 14), acl, aio-debian-gui, btrfs-progs, celluloid, dconf-cli, deluge, gnome-terminal, libreoffice-gtk3, pkexec, python3-apt, timeshift
 Description: Identidad, aplicaciones y actualización de AyusOS Linux
  Conjunto de aplicaciones y ajustes de AyusOS para Debian 13.

@@ -1,0 +1,7 @@
+#!/bin/sh
+# Mantener visible el resultado sin ejecutar la terminal como root.
+/usr/bin/pkexec /usr/lib/ayusos/actualizar
+estado=$?
+printf '\nPulsa Intro para cerrar… '
+read -r respuesta || :
+exit "$estado"
