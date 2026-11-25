@@ -51,7 +51,7 @@ sudo ./remaster/crear-iso-debian-gnome.sh debian-live-13.8.0-amd64-gnome.iso Ayu
 
 El script monta el sistema de archivos de la ISO en un chroot, instala las aplicaciones de `config/package-lists`, incorpora AiO Debian GUI estable, aplica `config/includes.chroot`, ajusta el idioma y el arranque, y reconstruye la ISO híbrida. Además actualiza tanto `sha256sum.txt` como `md5sum.txt` para que la comprobación de integridad del medio siga funcionando.
 
-La ISO resultante incluye el escritorio GNOME completo de Debian y puede ocupar alrededor de 4 GB. Para probarla desde una memoria USB, utiliza una de **8 GB o más**.
+La ISO resultante incluye el escritorio GNOME completo de Debian y puede ocupar alrededor de 4 GB. Para probarla desde una memoria USB, utiliza una de **8 GB o más**. También está marcada como compatible con Ventoy para que pueda arrancarse directamente desde su menú sin hooks de initramfs.
 
 <details>
 <summary>Ver la receta histórica de la 1.2</summary>

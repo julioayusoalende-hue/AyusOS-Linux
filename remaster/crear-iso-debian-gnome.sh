@@ -284,6 +284,8 @@ cp -- "$repositorio/config/includes.binary/boot/grub/splash.png" "$iso/boot/grub
 cp -- "$repositorio/config/includes.binary/isolinux/splash.png" "$iso/isolinux/splash.png"
 printf 'AyusOS Linux %s (base Debian Live GNOME)\n' "$version" > "$iso/.disk/info"
 printf 'Remastered from official Debian Live GNOME ISO\nBase: %s\nAyusOS version: %s\n' "$nombre_base" "$version" > "$iso/.disk/generator"
+# Evita que Ventoy aplique su hook a la ISO y la arranque como CD virtual.
+: > "$iso/ventoy.dat"
 
 actualizar_suma() {
     local manifiesto=$1 archivo=$2 ruta_iso=$3 algoritmo=$4 hash
@@ -307,6 +309,7 @@ modificados=(
     'isolinux/splash.png'
     '.disk/info'
     '.disk/generator'
+    'ventoy.dat'
 )
 for ruta in "${modificados[@]}"; do
     case "$ruta" in
@@ -333,6 +336,7 @@ xorriso -indev "$base" -outdev "$trabajo/resultado.iso" \
     -map "$iso/isolinux/splash.png" /isolinux/splash.png \
     -map "$iso/.disk/info" /.disk/info \
     -map "$iso/.disk/generator" /.disk/generator \
+    -map "$iso/ventoy.dat" /ventoy.dat \
     -boot_image any replay
 
 xorriso -osirrox on -indev "$trabajo/resultado.iso" -extract /sha256sum.txt "$trabajo/sha256sum.final"
