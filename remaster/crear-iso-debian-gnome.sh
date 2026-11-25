@@ -131,7 +131,6 @@ echo 'Preparando el chroot...'
 montar /dev "$raiz/dev"
 montar /dev/pts "$raiz/dev/pts"
 montar /proc "$raiz/proc"
-montar /sys "$raiz/sys"
 cp -L -- /etc/resolv.conf "$raiz/etc/resolv.conf"
 cp -- /etc/hosts "$raiz/etc/hosts"
 if [[ ! -e "$raiz/usr/sbin/policy-rc.d" ]]; then
