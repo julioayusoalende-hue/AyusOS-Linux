@@ -112,7 +112,7 @@ if (( libres_kb < 22 * 1024 * 1024 )); then
     exit 1
 fi
 
-mkdir -p -- "$raiz" "$iso/boot/grub/live-theme" "$iso/isolinux" "$iso/.disk" "$raiz/tmp"
+mkdir -p -- "$raiz" "$iso/boot/grub/live-theme" "$iso/isolinux" "$iso/.disk"
 echo "Extrayendo $nombre_base..."
 xorriso -osirrox on -indev "$base" \
     -extract /live/filesystem.squashfs "$trabajo/base.squashfs" \
@@ -125,6 +125,7 @@ xorriso -osirrox on -indev "$base" \
     -extract /isolinux/menu.cfg "$iso/isolinux/menu.cfg"
 unsquashfs -processors "${WORKERS:-$(nproc)}" -no-progress -d "$raiz" "$trabajo/base.squashfs"
 rm -- "$trabajo/base.squashfs"
+mkdir -p -- "$raiz/tmp"
 
 echo 'Preparando el chroot...'
 montar /dev "$raiz/dev"
