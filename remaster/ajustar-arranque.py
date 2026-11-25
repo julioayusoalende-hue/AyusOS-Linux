@@ -21,9 +21,21 @@ def adjust(filename: str) -> None:
     is_isolinux = "isolinux" in path.parts
     changed = False
     result: list[bytes] = []
+    skip_debian_installer = False
 
     for index, line in enumerate(lines):
         stripped = line.lstrip()
+        if path.name == "grub.cfg" and stripped.startswith(b"# Installer (if any)"):
+            skip_debian_installer = True
+        if skip_debian_installer:
+            if stripped.startswith(b"submenu 'Utilities"):
+                skip_debian_installer = False
+            else:
+                changed = True
+                continue
+        if path.name == "menu.cfg" and stripped.startswith(b"include install.cfg"):
+            changed = True
+            continue
         is_grub_live = is_grub and re.match(rb"linux\s", stripped) and b"/live/" in line
         is_isolinux_live = is_isolinux and stripped.startswith(b"append ") and b"boot=live" in line
         if (is_grub_live or is_isolinux_live) and b"locales=es_ES.UTF-8" not in line:

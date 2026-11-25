@@ -16,7 +16,7 @@ Un escritorio para trabajar y una herramienta gráfica para mantenerlo. Arranca 
 
 **Candidata sobre Debian Live GNOME para amd64.** Se remasteriza la ISO Live oficial de Debian 13 con GNOME y se le aplica la identidad, las aplicaciones y la configuración de AyusOS. La candidata no sustituye la descarga pública hasta que se compruebe su funcionamiento.
 
-## Construir AyusOS Linux 1.3 sobre Debian Live GNOME
+## Construir AyusOS Linux 1.4 sobre Debian Live GNOME
 
 AyusOS ya no construye el escritorio desde cero con `live-build`. La ISO parte de la **ISO Live oficial de Debian 13 con GNOME**, conservando su base completa: kernel, firmware, servicios, escritorio, Calamares y aplicaciones de Debian. Después se aplican la identidad de AyusOS, la selección de aplicaciones, los fondos, las extensiones, el recorrido de instalación y AiO Debian GUI.
 
@@ -34,10 +34,10 @@ Necesitas Debian 13 amd64, conexión a Internet, permisos de administrador y **a
 sudo apt update
 sudo apt install xorriso squashfs-tools curl gpgv python3 ca-certificates
 sudo ./construir.sh
-sha256sum -c AyusOS-Linux-1.3-amd64.iso.sha256
+sha256sum -c AyusOS-Linux-1.4-amd64.iso.sha256
 ```
 
-Sin argumentos, el script descarga la ISO GNOME actual de Debian 13 en `descargas/`, comprueba su suma SHA-256 y crea `AyusOS-Linux-1.3-amd64.iso` junto al repositorio. Si ya tienes la ISO oficial descargada, puedes reutilizarla:
+Sin argumentos, el script descarga la ISO GNOME actual de Debian 13 en `descargas/`, comprueba su suma SHA-256 y crea `AyusOS-Linux-1.4-amd64.iso` junto al repositorio. Si ya tienes la ISO oficial descargada, puedes reutilizarla:
 
 ```bash
 sudo ./construir.sh debian-live-13.8.0-amd64-gnome.iso
@@ -46,7 +46,7 @@ sudo ./construir.sh debian-live-13.8.0-amd64-gnome.iso
 También puedes elegir la ruta de salida:
 
 ```bash
-sudo ./remaster/crear-iso-debian-gnome.sh debian-live-13.8.0-amd64-gnome.iso AyusOS-Linux-1.3-personalizada-amd64.iso
+sudo ./remaster/crear-iso-debian-gnome.sh debian-live-13.8.0-amd64-gnome.iso AyusOS-Linux-1.4-personalizada-amd64.iso
 ```
 
 El script monta el sistema de archivos de la ISO en un chroot, instala las aplicaciones de `config/package-lists`, incorpora AiO Debian GUI estable, aplica `config/includes.chroot`, ajusta el idioma y el arranque, y reconstruye la ISO híbrida. Además actualiza tanto `sha256sum.txt` como `md5sum.txt` para que la comprobación de integridad del medio siga funcionando.
@@ -93,7 +93,7 @@ La receta actualiza **AiO Debian GUI** al último DEB estable publicado en su re
 
 ## Construir la ISO
 
-Las instrucciones completas están en [Construir AyusOS Linux 1.3 sobre Debian Live GNOME](#construir-ayusos-linux-13-sobre-debian-live-gnome). El script canónico es `remaster/crear-iso-debian-gnome.sh`; `construir.sh` y `remaster/crear-iso-1.3.sh` lo llaman para mantener compatibilidad con las recetas anteriores.
+Las instrucciones completas están en [Construir AyusOS Linux 1.4 sobre Debian Live GNOME](#construir-ayusos-linux-13-sobre-debian-live-gnome). El script canónico es `remaster/crear-iso-debian-gnome.sh`; `construir.sh` y `remaster/crear-iso-1.4.sh` lo llaman para mantener compatibilidad con las recetas anteriores.
 
 ### Probar en GNOME Cajas
 

@@ -1,5 +1,5 @@
 Package: ayusos-branding
-Version: 1.3
+Version: 1.4
 Architecture: all
 Maintainer: AyusOS Linux <julioayusoalende-hue@users.noreply.github.com>
 Depends: desktop-base
