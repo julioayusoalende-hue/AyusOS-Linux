@@ -1,0 +1,6 @@
+#!/bin/sh
+set -eu
+test -d /run/live/medium
+xhost +SI:localuser:root >/dev/null
+trap 'xhost -SI:localuser:root >/dev/null' EXIT
+pkexec calamares

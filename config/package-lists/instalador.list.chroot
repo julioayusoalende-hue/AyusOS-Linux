@@ -1,0 +1,17 @@
+calamares
+calamares-settings-debian
+grub-pc-bin
+grub-efi-amd64-bin
+grub2-common
+efibootmgr
+x11-xserver-utils
+qml6-module-qtquick
+qml6-module-qtquick-window
+qml6-module-qtquick-controls
+qml6-module-qtquick-layouts
+qml6-module-qtqml-workerscript
+cracklib-runtime
+wspanish
+dosfstools
+squashfs-tools
+cryptsetup-initramfs

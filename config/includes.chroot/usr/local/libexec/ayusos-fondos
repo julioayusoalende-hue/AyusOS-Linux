@@ -1,0 +1,15 @@
+#!/bin/sh
+set -eu
+
+# GNOME necesita desktop-base, incluidas sus alternativas de escritorio.
+# Mantén esas rutas con los fondos de AyusOS y retira las entradas del catálogo Debian.
+dpkg-query -L desktop-base | while IFS= read -r archivo; do
+    case "$archivo" in
+        /usr/share/gnome-background-properties/debian*.xml)
+            [ ! -f "$archivo" ] || unlink "$archivo"
+            ;;
+        /usr/share/desktop-base/*/wallpaper*/contents/images/*.svg|/usr/share/desktop-base/*/wallpaper*/contents/images/*.png|/usr/share/desktop-base/*/wallpaper*/contents/images/*.jpg|/usr/share/desktop-base/*/wallpaper*/*.svg|/usr/share/desktop-base/*/wallpaper*/*.png|/usr/share/desktop-base/*/wallpaper*/*.jpg|/usr/share/desktop-base/*/lockscreen/contents/images/*.svg|/usr/share/desktop-base/*/lockscreen/contents/images/*.png|/usr/share/desktop-base/*/lockscreen/contents/images/*.jpg|/usr/share/desktop-base/*/lockscreen/*.svg|/usr/share/desktop-base/*/lockscreen/*.png|/usr/share/desktop-base/*/lockscreen/*.jpg)
+            [ ! -e "$archivo" ] || ln -sfn /usr/share/backgrounds/ayusos/granate.png "$archivo"
+            ;;
+    esac
+done

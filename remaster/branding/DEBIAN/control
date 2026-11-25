@@ -1,0 +1,7 @@
+Package: ayusos-branding
+Version: 1.3
+Architecture: all
+Maintainer: AyusOS Linux <julioayusoalende-hue@users.noreply.github.com>
+Depends: desktop-base
+Description: Identidad visual de AyusOS Linux para GNOME
+ Instala el logotipo de AyusOS en las rutas de identidad del distribuidor.

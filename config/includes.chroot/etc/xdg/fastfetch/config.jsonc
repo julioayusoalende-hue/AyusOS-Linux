@@ -1,0 +1,77 @@
+{
+  "logo": {
+    "type": "file",
+    "source": "/usr/share/ayusos/fastfetch/ayusos.txt",
+    "color": {
+      "1": "red",
+      "2": "white"
+    },
+    "padding": {
+      "left": 1,
+      "right": 4
+    }
+  },
+  "display": {
+    "separator": ": ",
+    "color": {
+      "keys": "red"
+    }
+  },
+  "modules": [
+    "title",
+    "separator",
+    {
+      "type": "os",
+      "key": "Sistema"
+    },
+    {
+      "type": "host",
+      "key": "Equipo"
+    },
+    {
+      "type": "kernel",
+      "key": "Núcleo"
+    },
+    {
+      "type": "uptime",
+      "key": "Tiempo activo"
+    },
+    {
+      "type": "packages",
+      "key": "Paquetes"
+    },
+    {
+      "type": "shell",
+      "key": "Shell"
+    },
+    {
+      "type": "de",
+      "key": "Escritorio"
+    },
+    {
+      "type": "wm",
+      "key": "Gestor de ventanas"
+    },
+    {
+      "type": "terminal",
+      "key": "Terminal"
+    },
+    {
+      "type": "cpu",
+      "key": "Procesador"
+    },
+    {
+      "type": "gpu",
+      "key": "Gráficos"
+    },
+    {
+      "type": "memory",
+      "key": "Memoria"
+    },
+    {
+      "type": "disk",
+      "key": "Almacenamiento",
+      "folders": "/"
+    }
+  ]
+}

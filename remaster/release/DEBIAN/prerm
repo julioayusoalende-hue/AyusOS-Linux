@@ -1,0 +1,9 @@
+#!/bin/sh
+set -eu
+
+if [ "$1" = remove ] || [ "$1" = deconfigure ]; then
+    rm -f -- /etc/os-release
+    if dpkg-divert --listpackage /etc/os-release | grep -qx ayusos-release; then
+        dpkg-divert --package ayusos-release --remove --rename /etc/os-release
+    fi
+fi

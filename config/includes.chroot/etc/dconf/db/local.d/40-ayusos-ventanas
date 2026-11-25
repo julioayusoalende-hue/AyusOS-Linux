@@ -1,0 +1,8 @@
+[org/gnome/desktop/wm/preferences]
+action-double-click-titlebar='toggle-maximize'
+action-middle-click-titlebar='none'
+action-right-click-titlebar='menu'
+button-layout=':minimize,maximize,close'
+
+[org/gnome/mutter]
+attach-modal-dialogs=true

@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Instalar AyusOS
+Comment=Instalador gráfico de AyusOS Linux
+Exec=/usr/local/libexec/ayusos-instalar
+Icon=ayusos
+Terminal=false
+Categories=System;

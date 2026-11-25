@@ -1,0 +1,10 @@
+#!/bin/sh
+set -eu
+# Calamares ya ha escrito las fuentes definitivas de Debian.
+rm -f -- /etc/apt/sources.list.d/zz-sources.list /etc/apt/sources.list.d/packages.list
+DEBIAN_FRONTEND=noninteractive apt-get -y --autoremove purge \
+    calamares calamares-settings-debian \
+    live-boot live-boot-doc live-config live-config-doc live-config-systemd \
+    live-tools live-task-localisation live-task-recommended
+rm -rf -- /etc/calamares
+rm -f -- /usr/share/applications/ayusos-instalar.desktop /usr/local/libexec/ayusos-instalar

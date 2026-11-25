@@ -1,8 +1,9 @@
-name: Candidata 1.3 sobre AyusOS 1.2
+name: Candidata 1.3 sobre Debian Live GNOME
 
 on:
   push:
-    branches: [correccion/1.3]
+    branches: [base-debian-live-gnome, correccion/1.3]
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -10,31 +11,44 @@ permissions:
 jobs:
   remaster:
     runs-on: ubuntu-24.04
-    timeout-minutes: 45
-    env:
-      GH_TOKEN: ${{ github.token }}
+    timeout-minutes: 75
     steps:
       - uses: actions/checkout@v4
-      - name: Obtener la ISO oficial 1.2
+
+      - name: Liberar espacio para la ISO y el chroot
         run: |
           set -euo pipefail
+          sudo rm -rf /usr/share/dotnet /opt/ghc /usr/local/lib/android /opt/hostedtoolcache/CodeQL
           df -h .
-          gh release download v1.2 --pattern '*.iso.part-0[12]'
-          cat AyusOS-Linux-1.2-amd64.iso.part-0{1,2} > base.iso
-          rm -- AyusOS-Linux-1.2-amd64.iso.part-0{1,2}
-      - name: Remasterizar sin recrear el escritorio ni el instalador
+
+      - name: Instalar herramientas de remasterizado
         run: |
           set -euo pipefail
           sudo apt-get update
-          sudo apt-get install -y xorriso squashfs-tools
-          sudo bash remaster/crear-iso-1.3.sh base.iso AyusOS-Linux-1.3-candidata-amd64.iso
+          sudo apt-get install -y xorriso squashfs-tools curl gpgv python3 ca-certificates
+
+      - name: Construir sobre la ISO Live GNOME oficial de Debian 13
+        env:
+          AYUSOS_OUTPUT: ${{ github.workspace }}/AyusOS-Linux-1.3-candidata-amd64.iso
+        run: |
+          set -euo pipefail
+          sudo env AYUSOS_OUTPUT="$AYUSOS_OUTPUT" ./construir.sh
           sha256sum --check AyusOS-Linux-1.3-candidata-amd64.iso.sha256
           xorriso -indev AyusOS-Linux-1.3-candidata-amd64.iso -report_el_torito plain
+          df -h .
+
+      - name: Dividir la ISO para el artefacto
+        run: |
+          set -euo pipefail
+          iso=AyusOS-Linux-1.3-candidata-amd64.iso
+          split -b 1200M -d -a 2 --numeric-suffixes=1 "$iso" "$iso.part-"
+          rm -- "$iso"
+
       - uses: actions/upload-artifact@v4
         with:
-          name: AyusOS-Linux-1.3-candidata-amd64
+          name: AyusOS-Linux-1.3-candidata-debian-gnome-amd64
           path: |
-            AyusOS-Linux-1.3-candidata-amd64.iso
+            AyusOS-Linux-1.3-candidata-amd64.iso.part-*
             AyusOS-Linux-1.3-candidata-amd64.iso.sha256
           if-no-files-found: error
           compression-level: 0

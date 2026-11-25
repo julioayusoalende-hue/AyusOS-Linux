@@ -1,8 +1,8 @@
 NAME="AyusOS Linux"
-PRETTY_NAME="AyusOS Linux 1.2 (base Debian 13)"
+PRETTY_NAME="AyusOS Linux 1.3 (base Debian 13)"
 ID=debian
 VERSION_ID="13"
-AYUSOS_VERSION="1.2"
+AYUSOS_VERSION="1.3"
 LOGO=ayusos
 VERSION_CODENAME=trixie
 DEBIAN_CODENAME=trixie

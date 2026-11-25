@@ -1,0 +1,13 @@
+# ISOs y descargas de compilación
+descargas/
+*.iso
+*.iso.part-*
+*.iso.sha256
+*.deb
+
+# Directorios temporales de remasterizado
+.ayusos-debian.*
+.ayusos-remaster.*
+compilacion.*
+__pycache__/
+*.pyc

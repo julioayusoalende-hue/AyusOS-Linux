@@ -1,16 +1,52 @@
 #!/bin/sh
 set -eu
-cat > /etc/ayusos-release <<'RELEASE'
-NAME="AyusOS Linux"
-PRETTY_NAME="AyusOS Linux 0.1 (base Debian 13)"
-ID=ayusos
-ID_LIKE=debian
-VERSION_ID="0.1"
-VERSION_CODENAME=trixie
-DEBIAN_CODENAME=trixie
-RELEASE
-ln -sfn ayusos-release /etc/os-release
+
 sed -i 's/^# *es_ES.UTF-8 UTF-8/es_ES.UTF-8 UTF-8/' /etc/locale.gen
 locale-gen es_ES.UTF-8
 update-locale LANG=es_ES.UTF-8
+
+cat > /etc/default/keyboard <<'KEYBOARD'
+# KEYBOARD CONFIGURATION FILE
+# Consult the keyboard(5) manual page.
+XKBMODEL="pc105"
+XKBLAYOUT="es"
+XKBVARIANT=""
+XKBOPTIONS=""
+BACKSPACE="guess"
+KEYBOARD
+
+printf 'Europe/Madrid\n' > /etc/timezone
+ln -sfn /usr/share/zoneinfo/Europe/Madrid /etc/localtime
+printf 'ayusos\n' > /etc/hostname
 systemctl set-default graphical.target
+
+if [ "$(dpkg-query -W -f='${Status}' aio-debian-gui)" != 'install ok installed' ]; then
+    echo 'No se ha instalado AiO Debian GUI en la imagen.' >&2
+    exit 1
+fi
+
+for paquete in google-chrome-stable timeshift gnome-terminal; do
+    test "$(dpkg-query -W -f='${Status}' "$paquete")" = 'install ok installed'
+done
+update-alternatives --set x-terminal-emulator /usr/bin/gnome-terminal.wrapper
+update-alternatives --set x-www-browser /usr/bin/google-chrome-stable
+systemctl enable grub-btrfsd.service ayusos-snapshot-inicial.service ayusos-aio-inicial.service ayusos-aio-autorizacion.service
+
+# Retira los lanzadores y ajustes de Calamares que pertenecen a Debian.
+for archivo in /usr/share/applications/calamares-install-debian.desktop /usr/share/applications/calamares.desktop /etc/xdg/autostart/calamares-desktop-icon.desktop /usr/share/glib-2.0/schemas/96_calamares-settings-debian.gschema.override; do
+    [ ! -f "$archivo" ] || unlink "$archivo"
+done
+glib-compile-schemas /usr/share/glib-2.0/schemas
+for schemas in /usr/share/gnome-shell/extensions/*/schemas; do
+    [ ! -d "$schemas" ] || glib-compile-schemas --strict "$schemas"
+done
+dconf update
+
+/usr/local/libexec/ayusos-fondos
+for paquete in gdm3 gnome-shell gnome-session gnome-control-center gnome-calculator yaru-theme-gnome-shell calamares; do
+    test "$(dpkg-query -W -f='${Status}' "$paquete")" = 'install ok installed'
+done
+
+flatpak remote-add --system --if-not-exists --from flathub /usr/share/ayusos/flatpak/flathub.flatpakrepo
+
+systemctl enable cups.service cups.socket cups.path cups-browsed.service avahi-daemon.service

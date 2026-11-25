@@ -1,5 +1,10 @@
 #!/bin/sh
 set -eu
+
 if [ "$1" = configure ]; then
+    if ! dpkg-divert --listpackage /etc/os-release | grep -qx ayusos-release; then
+        dpkg-divert --package ayusos-release --divert /etc/os-release.debian --rename --add /etc/os-release
+    fi
+    ln -sfn ayusos-release /etc/os-release
     dconf update
 fi

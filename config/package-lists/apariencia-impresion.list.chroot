@@ -1,0 +1,13 @@
+yaru-theme-gnome-shell
+yaru-theme-gtk
+yaru-theme-icon
+gnome-shell-extension-user-theme
+cups
+avahi-daemon
+cups-browsed
+cups-pk-helper
+ipp-usb
+colord
+libnss-mdns
+system-config-printer-common
+system-config-printer-udev

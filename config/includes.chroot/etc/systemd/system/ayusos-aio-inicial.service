@@ -1,0 +1,17 @@
+[Unit]
+Description=Ejecutar el primer mantenimiento de AiO Debian GUI
+Wants=network-online.target
+Requires=ayusos-aio-autorizacion.service
+After=ayusos-aio-autorizacion.service ayusos-snapshot-inicial.service network-online.target
+ConditionPathExists=!/var/lib/ayusos/aio-inicial
+ConditionKernelCommandLine=!boot=live
+StartLimitIntervalSec=0
+
+[Service]
+Type=exec
+ExecStart=/usr/local/libexec/ayusos-aio-inicial
+Restart=on-failure
+RestartSec=5min
+
+[Install]
+WantedBy=multi-user.target

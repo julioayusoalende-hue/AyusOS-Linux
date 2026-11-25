@@ -1,0 +1,8 @@
+[org/gnome/desktop/interface]
+gtk-theme='Yaru-red'
+icon-theme='Yaru-red'
+cursor-theme='Yaru'
+accent-color='red'
+
+[org/gnome/shell/extensions/user-theme]
+name=''

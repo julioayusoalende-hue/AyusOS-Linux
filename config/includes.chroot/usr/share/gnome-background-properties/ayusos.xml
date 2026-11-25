@@ -1,13 +1,19 @@
-<?xml version="1.0"?>
-<!DOCTYPE wallpapers SYSTEM "gnome-wp-list.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
 <wallpapers>
   <wallpaper deleted="false">
-    <name>AyusOS</name>
-    <filename>/usr/share/backgrounds/ayusos/ayusos-claro.jpg</filename>
-    <filename-dark>/usr/share/backgrounds/ayusos/ayusos-oscuro.jpg</filename-dark>
+    <name>AyusOS Granate</name>
+    <filename>/usr/share/backgrounds/ayusos/granate.png</filename>
     <options>zoom</options>
-    <shade_type>solid</shade_type>
-    <pcolor>#7a0c20</pcolor>
-    <scolor>#7a0c20</scolor>
+  </wallpaper>
+  <wallpaper deleted="false">
+    <name>AyusOS Perla</name>
+    <filename>/usr/share/backgrounds/ayusos/perla.png</filename>
+    <options>zoom</options>
+  </wallpaper>
+  <wallpaper deleted="false">
+    <name>AyusOS Horizonte</name>
+    <filename>/usr/share/backgrounds/ayusos/horizonte-claro.png</filename>
+    <filename-dark>/usr/share/backgrounds/ayusos/horizonte-oscuro.png</filename-dark>
+    <options>zoom</options>
   </wallpaper>
 </wallpapers>
